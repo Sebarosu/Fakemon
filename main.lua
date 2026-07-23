@@ -6,9 +6,18 @@ return function(mod)
 	  end,
 	})
 
-
+	-- Add Pokedex entries
 	YoshiDex = "He catches enemies \nwith his long ton-\ngue and turns them \ninto eggs,to then \nthrow them like \nproyectiles."
 	mod.content.text:register("_YoshiDexEntry", YoshiDex)
+
+
+	-- Add Palettes
+	mod.content.palettes:register("EGGMON", {
+		{255, 255, 255},   -- shade 0 (also transparency on battle pics)
+		{120, 208, 24},
+		{248, 88, 24},
+		{ 40,   0,  20},
+	})
 
 	-- New Pokemon
 	mod.content.pokemon:register("YOSHI", {
@@ -50,14 +59,13 @@ return function(mod)
 	  evolutions = {},
 	  spriteFront = mod.assets:path("assets/yoshi_front.png"),
 	  spriteBack = mod.assets:path("assets/yoshi_back.png"),
-	  frontSize = 4,
-	  palette = "GREENMON"
+	  palette = "EGGMON",
+	  frontSize = 4
 	})
 	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi_cry.wav") })
 	mod.content.icons:register("YOSHI", {
 	  image = "assets/generated/sprites/monster.png"
 	})
-	--mod.content.palettes:register("YOSHI", "GREENMON") Not yet
 	-- Area
 	mod.content.encounters:patch("ROUTE_2", {
 	  grass = { slots = { __prepend = { { species = "YOSHI", level = 8 } } } },
