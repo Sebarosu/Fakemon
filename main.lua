@@ -7,14 +7,14 @@ return function(mod)
 	})
 
 
-	YoshiDex = "He catches enemies with his long tongue  and turns them \ninto eggs, to then throw them like proyectiles. If he eats \na red fruit, he can spit a breath of fire."
-	mod.content.text:register("_YoshiDexEntry", "YoshiDex")
+	YoshiDex = "He catches enemies \nwith his long ton-\ngue and turns them \ninto eggs,to then \nthrow them like \nproyectiles."
+	mod.content.text:register("_YoshiDexEntry", YoshiDex)
 
 	-- New Pokemon
 	mod.content.pokemon:register("YOSHI", {
 	  id = "YOSHI", 
 	  name = "YOSHI", 
-	  dex = 999, 
+	  dex = 152, 
 	  dexEntry = { 
 		heightFt = 4,
 		heightIn = 4,
@@ -50,13 +50,18 @@ return function(mod)
 	  evolutions = {},
 	  spriteFront = mod.assets:path("assets/yoshi_front.png"),
 	  spriteBack = mod.assets:path("assets/yoshi_back.png"),
-	  frontSize = 5
+	  frontSize = 4,
+	  palette = "GREENMON"
 	})
 	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi_cry.wav") })
-	mod.content.icons:register("YOSHI", "MON")
-
+	mod.content.icons:register("YOSHI", {
+	  image = "assets/generated/sprites/monster.png"
+	})
+	--mod.content.palettes:register("YOSHI", "GREENMON") Not yet
 	-- Area
 	mod.content.encounters:patch("ROUTE_2", {
 	  grass = { slots = { __prepend = { { species = "YOSHI", level = 8 } } } },
 	})
+	-- Update Pokedex
+	mod.content.constants:patch("dexSize", 153)
 end
