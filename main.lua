@@ -6,70 +6,793 @@ return function(mod)
 	  end,
 	})
 
+	-- Add Items
+	mod.content.items:register("MIST_STONE", {
+    id = "MIST_STONE",
+    index = 98,
+    name = "MIST STONE",
+    price = 4200,
+  })
+
 	-- Add Pokedex entries
 	YoshiDex = "He catches enemies \nwith his long ton-\ngue and turns them \ninto eggs,to then \nthrow them like \nproyectiles."
 	mod.content.text:register("_YoshiDexEntry", YoshiDex)
+	GoroDex = "GOROCHU is competitive \nby nature. Uses \ntheir two big tails,\ncharged with elec-\ntricity to attack.\nLives in hot areas."
+	mod.content.text:register("_GorochuDexEntry", GoroDex)
+	SonicDex = "Fastest thing Alive! \nKnight of the Wind."
+	mod.content.text:register("_SonicDexEntry", SonicDex)
+	SapuDex = "A huge POKéMON that \ncan be as high \n as a building,\n with a tropical \ntree on his back \nthat, on bigger\n beings, becomes \nan entire forest."
+	mod.content.text:register("_SapusaurDexEntry", SapuDex)
+	KirbyDex = "He absorbs his \nenemies by inhaling \nbig breaths and \ncopies instantly \ntheir techinques.\nHis body, soft as\na baloon, allows\nhim to fly without\nend."
+	mod.content.text:register("_KirbyDexEntry", KirbyDex)
+	ColtDex = "Lives in the \nheart of active\nvolcanoes that,\nwhen erupting,\nthey fly away \nto another one\nat such speed\nno one can no-\ntice them clearly"
+	mod.content.text:register("_CharcoltDexEntry", ColtDex)
+	
+	-- List Pokémon
+	dex_no = 1
 
-
-	-- Add Palettes
-	mod.content.palettes:register("EGGMON", {
-		{255, 255, 255},   -- shade 0 (also transparency on battle pics)
-		{120, 208, 24},
-		{248, 88, 24},
-		{ 40,   0,  20},
+	mod.content.pokemon:patch("BULBASAUR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("IVYSAUR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VENUSAUR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:register("SAPUSAUR", {
+		id = "SAPUSAUR",
+		name = "SAPUSAUR",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 19,
+			heightIn = 8,
+			kind = "OVERGROWTH",
+			weight = 2204.6,
+			text = "_SapusaurDexEntry"},
+		types = { "PLANT", "POISON" },
+		baseStats = { 
+			hp = 130, 
+			attack = 105, 
+			defense = 135, 
+			speed = 35, 
+			special = 145 },
+		catchRate = 45, 
+		baseExp = 255, 
+		growthRate = "SLOW",
+		level1Moves = { "ROAR", "LEECH_SEED", "TACKLE", "VINE_WHIP" }, 
+		learnset = {
+			{ level = 7, move = "LEECH_SEED" },
+			{ level = 13, move = "VINE_WHIP" },
+			{ level = 22, move = "POISONPOWDER" },
+			{ level = 30, move = "RAZOR_LEAF" },
+			{ level = 38, move = "MIST" },
+			{ level = 43, move = "GROWTH" },
+			{ level = 48, move = "STUN_POWDER" },
+			{ level = 55, move = "SLEEP_POWDER" },
+			{ level = 58, move = "SLUDGE" },
+			{ level = 65, move = "SOLARBEAM" },
+			{ level = 72, move = "PETAL_DANCE" },
+		}, 
+		tms = {
+			"SWORDS_DANCE", 
+			"TOXIC", 
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"HYPER_BEAM", 
+			"RAGE", 
+			"MEGA_DRAIN", 
+			"SOLAR_BEAM", 
+			"MIMIC", 
+			"REFLECT", 
+			"BIDE", 
+			"REST", 
+			"SUBSTITUTE",
+			"CUT"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/sapusaur_front.png"),
+		spriteBack = mod.assets:path("assets/sapusaur_back.png"),
+		frontSize = 6,
 	})
-
-	-- New Pokemon
+	mod.content.pokemon:patch( "VENUSAUR", { evolutions = {
+		{
+        item = "MIST_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "SAPUSAUR",
+      },
+	}})
+	mod.content.cries:register("SAPUSAUR", { file = mod.assets:path("assets/sapusaur_cry.wav") })
+	mod.content.icons:register("SAPUSAUR", "GRASS")
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CHARMANDER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CHARMELEON", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CHARIZARD", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:register{"CHARCOLT", {
+		id = "CHARCOLT",
+		name = "CHARCOLT",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 8,
+			heightIn = 6,
+			kind = "FIREDRAGON",
+			weight = 254.6,
+			text = "_CharcoltDexEntry"},
+		types = { "FIRE", "DRAGON" },
+		baseStats = { 
+			hp = 86, 
+			attack = 112, 
+			defense = 92, 
+			speed = 108, 
+			special = 122 },
+		catchRate = 3, 
+		baseExp = 255, 
+		growthRate = "MEDIUM_SLOW",
+		level1Moves = { "SCRATCH", "GROWL", "LEER" }, 
+		learnset = {
+			{ level = 9, move = "EMBER" },
+			{ level = 14, move = "RAGE" },
+			{ level = 26, move = "SLASH" },
+			{ level = 36, move = "FLAMETHROWER" },
+			{ level = 45, move = "FIRE_SPIN" },
+			{ level = 52, move = "WING_ATTACK" },
+			{ level = 60, move = "ROAR" },
+			{ level = 70, move = "DRAGON_RAGE" },
+		}, 
+		tms = {
+			"MEGA_PUNCH",
+			"RAZOR_WIND",
+			"SWORDS_DANCE", 
+			"MEGA_KICK",
+			"TOXIC", 
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"HYPER_BEAM", 
+			"SUBMISSION",
+			"COUNTER",
+			"SEISMIC_TOSS",
+			"RAGE", 
+			"DRAGON_RAGE",
+			"EARTHQUAKE",
+			"FISSURE",
+			"DIG",
+			"MIMIC", 
+			"DOUBLE_TEAM",
+			"REFLECT", 
+			"BIDE", 
+			"FIRE_BLAST",
+			"SWIFT",
+			"HEADBUTT",
+			"SKY_ATTACK",
+			"REST", 
+			"ROCK_SIDE",
+			"SUBSTITUTE",
+			"CUT",
+			"FLY",
+			"STRENGTH"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/charcolt_front.png"),
+		spriteBack = mod.assets:path("assets/charcolt_back.png"),
+		frontSize = 6,
+	}}
+	mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/sapusaur_cry.wav") })
+	mod.content.icons:register("CHARCOLT", "MON")
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"SKELOZARD",}
+	--mod.content.cries:register("SKELOZARD", { file = mod.assets:path("assets/sapusaur_cry.wav") })
+	--mod.content.icons:register("SKELOZARD", "HELIX")
+	mod.content.pokemon:patch( "CHARIZARD", { evolutions = {
+		{
+        item = "MIST_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "CHARCOLT",
+      },
+	}})
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SQUIRTLE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("WARTORTLE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("BLASTOISE", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"RAINER",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CATERPIE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("METAPOD", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("BUTTERFREE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("WEEDLE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KAKUNA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("BEEDRILL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PIDGEY", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PIDGEOTTO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PIDGEOT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("RATTATA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("RATICATE", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"RATICLAW",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SPEAROW", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("FEAROW", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("EKANS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ARBOK", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PIKACHU", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("RAICHU", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:register("GOROCHU", {
+		id = "GOROCHU",
+		name = "GOROCHU",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 3,
+			heightIn = 7,
+			kind = "INT. MOUSE",
+			weight = 84.6,
+			text = "_GorochuDexEntry"},
+		types = { "ELECRTIC", "FIRE" },
+		baseStats = { 
+			hp = 60, 
+			attack = 112, 
+			defense = 50, 
+			speed = 105, 
+			special = 79 },
+		catchRate = 45, 
+		baseExp = 155, 
+		growthRate = "MEDIUM_FAST",
+		level1Moves = { "THUNDERSHOCK", "TAIL_WHIP", "QUICK_ATTACK", "THUNDERBOLT" }, 
+		learnset = {
+			{ level = 12, move = "EMBER" },
+			{ level = 19, move = "SLASH" },
+			{ level = 24, move = "THUNDER_WAVE" },
+			{ level = 30, move = "FIRE_SPIN" },
+			{ level = 38, move = "FIRE_PUNCH" },
+			{ level = 40, move = "THUNDER_PUNCH"},
+			{ level = 45, move = "THUNDER" },
+			{ level = 54, move = "FIRE_BLAST" },
+		}, 
+		tms = {
+			"MEGA_PUNCH", 
+			"MEGA_KICK", 
+			"FIRE_PUNCH", 
+			"BODY_SLAM", 
+			"HYPER_BEAM", 
+			"SUBMISSION", 
+			"RAGE", 
+			"FIRE_BLAST", 
+			"THUNDER_WAVE"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/gorochu_front.png"),
+		spriteBack = mod.assets:path("assets/gorochu_back.png"),
+		frontSize = 4,
+	})
+	mod.content.pokemon:patch( "PIKACHU", { evolutions = {
+		{
+        item = "THUNDER_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "RAICHU",
+      },
+		{
+        item = "FIRE_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "GOROCHU",
+      },
+	}})
+	mod.content.cries:register("GOROCHU", { file = mod.assets:path("assets/gorochu_cry.wav") })
+	mod.content.icons:register("GOROCHU", "MON")
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SANDSHREW", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SANDSLASH", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NIDORAN_F", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NIDORINA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NIDOQUEEN", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"NIDOGODESS",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NIDORAN_M", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NIDORINO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NIDOKING", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"NIDOGOD",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CLEFAIRY", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CLEFABLE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VULPIX", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("NINETALES", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("JIGGLYPUFF", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("WIGGLYTUFF", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ZUBAT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GOLBAT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ODDISH", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GLOOM", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VILEPLUME", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PARAS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PARASECT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VENONAT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VENOMOTH", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DIGLETT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DUGTRIO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MEOWTH", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PERSIAN", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PSYDUCK", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GOLDUCK", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"DIIR",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MANKEY", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PRIMEAPE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GROWLITHE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ARCANINE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("POLIWAG", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("POLIWHIRL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("POLIWRATH", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"CROCKY",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ABRA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KADABRA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ALAKAZAM", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MACHOP", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MACHOKE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MACHAMP", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"CAKTOOS",}
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"JAGG",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("BELLSPROUT", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("WEEPINBELL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VICTREEBEL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("TENTACOOL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("TENTACRUEL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GEODUDE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GRAVELER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GOLEM", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PONYTA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("RAPIDASH", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SLOWPOKE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SLOWBRO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MAGNEMITE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MAGNETON", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("FARFETCHD", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DODUO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DODRIO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SEEL", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DEWGONG", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GRIMER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MUK", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SHELLDER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CLOYSTER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GASTLY", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("HAUNTER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GENGAR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ONIX", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DROWZEE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("HYPNO", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"DREAMASTER",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KRABBY", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KINGLER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VOLTORB", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ELECTRODE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("EXEGGCUTE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("EXEGGUTOR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CUBONE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MAROWAK", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"FRACTURE",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("HITMONLEE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("HITMONCHAN", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("LICKITUNG", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KOFFING", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("WEEZING", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("RHYHORN", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("RHYDON", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("CHANSEY", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("TANGELA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KANGASKHAN", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("HORSEA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SEADRA", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GOLDEEN", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SEAKING", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("STARYU", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("STARMIE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MRMIME", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"BALLOONDA",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SCYTHER", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("JYNX", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ELECTABUZZ", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MAGMAR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PINSIR", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"PINSIRE",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("TAUROS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MAGIKARP", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("GYARADOS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("LAPRAS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DITTO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("EEVEE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("VAPOREON", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("FLAREON", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("JOLTEON", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"GYAOON",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("PORYGON", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("OMANYTE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("OMASTAR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KABUTO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("KABUTOPS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("AERODACTYL", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"KOTORA",}
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"RAITORA",}
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"GAOTORA",}
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("SNORLAX", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ARTICUNO", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("ZAPDOS", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MOLTRES", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DRATINI", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DRAGONAIR", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("DRAGONITE", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MEW", { dex = dex_no })
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch("MEWTWO", { dex = dex_no })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"MEWTHREE",}
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"OMEGA",}
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"DIMINOX",}
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"BETARCEUS",}
+	dex_no = dex_no + 1
 	mod.content.pokemon:register("YOSHI", {
-	  id = "YOSHI", 
-	  name = "YOSHI", 
-	  dex = 152, 
-	  dexEntry = { 
+		id = "YOSHI", 
+		name = "YOSHI", 
+		dex = dex_no, 
+		dexEntry = { 
 		heightFt = 4,
 		heightIn = 4,
 		kind = "DINO",
 		weight = 68.3,
 		text = "_YoshiDexEntry"},
-	  types = { "DRAGON", "FLYING" },
-	  baseStats = { 
+		types = { "DRAGON", "FLYING" },
+		baseStats = { 
 		hp = 70, 
 		attack = 85, 
 		defense = 70, 
 		speed = 95, 
 		special = 75 },
-	  catchRate = 45, 
-	  baseExp = 155, 
-	  growthRate = "MEDIUM_FAST",
-	  level1Moves = { "TACKLE", "GROWL" }, 
-	  learnset = {
-		  { level = 4, move = "LICK" },
-		  { level = 8, move = "LEER" },
-		  { level = 12, move = "STOMP" },
-		  { level = 16, move = "BITE" },
-		  { level = 20, move = "EGG_BOMB" },
-		  { level = 24, move = "AGILITY" },
-		  { level = 28, move = "SCREECH" },
-		  { level = 32, move = "TAKE_DOWN" },
-		  { level = 36, move = "DRAGON_RAGE" },
-		  { level = 40, move = "DOUBLE_EDGE" },
-		  { level = 44, move = "RAGE" },
-		  { level = 48, move = "HYPER_BEAM" },
+		catchRate = 45, 
+		baseExp = 155, 
+		growthRate = "SLOW",
+		level1Moves = { "TACKLE", "GROWL" }, 
+		learnset = {
+			{ level = 4, move = "LICK" },
+			{ level = 8, move = "LEER" },
+			{ level = 12, move = "STOMP" },
+			{ level = 16, move = "BITE" },
+			{ level = 20, move = "EGG_BOMB" },
+			{ level = 24, move = "AGILITY" },
+			{ level = 28, move = "SCREECH" },
+			{ level = 32, move = "TAKE_DOWN" },
+			{ level = 36, move = "DRAGON_RAGE" },
+			{ level = 40, move = "DOUBLE_EDGE" },
+			{ level = 44, move = "RAGE" },
+			{ level = 48, move = "HYPER_BEAM" },
 		}, 
-	  tms = {"SWORDS_DANCE", "MEGA_KICK", "BODY_SLAM", "TAKE_DOWN", "DOUBLE_EDGE", "HYPER_BEAM", "RAGE", "DRAGON_RAGE", "EARTHQUAKE", "DOUBLE_TEAM", "EGG_BOMB", "FIRE_BLAST", "SWIFT", "SKY_ATTACK", "ROCK_SLIDE", "CUT", "FLY", "SURF", "STRENGTH", "FLASH"},
-	  evolutions = {},
-	  spriteFront = mod.assets:path("assets/yoshi_front.png"),
-	  spriteBack = mod.assets:path("assets/yoshi_back.png"),
-	  palette = "EGGMON",
-	  frontSize = 4
+		tms = {
+			"SWORDS_DANCE", 
+			"MEGA_KICK", 
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"HYPER_BEAM", 
+			"RAGE", 
+			"DRAGON_RAGE", 
+			"EARTHQUAKE", 
+			"DOUBLE_TEAM", 
+			"EGG_BOMB", 
+			"FIRE_BLAST", 
+			"SWIFT", 
+			"SKY_ATTACK", 
+			"ROCK_SLIDE", 
+			"CUT", 
+			"FLY", 
+			"SURF", 
+			"STRENGTH", 
+			"FLASH"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/yoshi_front.png"),
+		spriteBack = mod.assets:path("assets/yoshi_back.png"),
+		frontSize = 4
 	})
 	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi_cry.wav") })
-	mod.content.icons:register("YOSHI", {
-	  image = "assets/generated/sprites/monster.png"
+	mod.content.icons:register("YOSHI", { image = mod.assets:path("assets/yoshi_icon.wav") })
+	dex_no = dex_no + 1
+	mod.content.pokemon:register("KIRBY", {
+		id = "KIRBY", 
+		name = "KIRBY", 
+		dex = dex_no, 
+		dexEntry = { 
+		heightFt = 0,
+		heightIn = 8,
+		kind = "STELLAR",
+		weight = 2.2,
+		text = "_KirbyDexEntry"},
+		types = { "NORMAL", "FLYING" }, 
+		baseStats = { 
+		hp = 100, 
+		attack = 70, 
+		defense = 70, 
+		speed = 90, 
+		special =100 },
+		catchRate = 3, 
+		baseExp = 195, 
+		growthRate = "SLOW",
+		level1Moves = { "TACKLE", "DFENSE_CURL",  }, 
+		learnset = {
+			{ level = 5, move = "GROWL" },
+			{ level = 8, move = "WATER_GUN" },
+			{ level = 12, move = "EMBER" },
+			{ level = 16, move = "AURORA_BEAM" },
+			{ level = 20, move = "THUNDERSHOCK" },
+			{ level = 24, move = "WING_ATTACK" },
+			{ level = 28, move = "SLASH" },
+			{ level = 32, move = "ROCK_THROW" },
+			{ level = 36, move = "SWIFT" },
+			{ level = 40, move = "SKULL_BASH" },
+			{ level = 44, move = "FIRE_PUNCH" },
+			{ level = 48, move = "ICE_BREAM" },
+			{ level = 52, move = "THUNDERBOLT" },
+			{ level = 56, move = "FLAMETHROWER" },
+			{ level = 60, move = "SING" },
+			{ level = 64, move = "THRASH" },
+			{ level = 68, move = "HEADBUTT" },
+			{ level = 72, move = "FISSURE" },
+			{ level = 76, move = "HYPER_BEAM" },
+			{ level = 80, move = "RECOVER" },
+		}, 
+		tms = {
+			"MEGA_PUNCH", 
+			"SWORDS_DANCE", 
+			"MEGA_KICK", 
+			"TOXIC", 
+			"BODY_SLAM", 
+			"DOUBLE_EDGE", 
+			"BUBBLE_BEAM", 
+			"WATER_GUN", 
+			"ICE_BEAM",
+			"BLIZZARD",
+			"HYPER_BEAM",
+			"SUBMISSION",
+			"RAGE",
+			"THUNDERBOLT", 
+			"THUNDER",
+			"EARTHQUAKE",
+			"FISSURE",
+			"DOUBLE_TEAM", 
+			"REFLECT",
+			"EGG_BOMB",
+			"FIRE_BLAST",
+			"SWIFT", 
+			"SKY_ATTACK",
+			"REST",
+			"THUNDER_WAVE",
+			"ROCK_SLIDE",
+			"CUT",
+			"FLY",
+			"SURF",
+			"STRENGTH",
+			"FLASH"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/kirby_front.png"),
+		spriteBack = mod.assets:path("assets/kirby_back.png"),
+		frontSize = 5
 	})
+	mod.content.cries:register("KIRBY", { file = mod.assets:path("assets/kirby_cry.wav") })
+	mod.content.icons:register("KIRBY", "FAIRY")
+	dex_no = dex_no + 1
+	mod.content.pokemon:register("SONIC", {
+		id = "SONIC", 
+		name = "SONIC", 
+		dex = dex_no, 
+		dexEntry = { 
+		heightFt = 2,
+		heightIn = 4,
+		kind = "HEDGEHOG",
+		weight = 30.0,
+		text = "_SonicDexEntry"},
+		types = { "ELECTRIC", "FIGHTING" }, 
+		baseStats = { 
+		hp = 70, 
+		attack = 80, 
+		defense = 35, 
+		speed = 140, 
+		special = 75 },
+		catchRate = 120, 
+		baseExp = 100, 
+		growthRate = "SLOW",
+		level1Moves = { "QUICK_ATTACK", "TAIL_WHIP",  }, 
+		learnset = {
+			{ level = 12, move = "THUNDERBOLT" },
+			{ level = 20, move = "SWIFT" },
+			{ level = 25, move = "JUMP_KICK" },
+			{ level = 32, move = "ROLLOUT" },
+			{ level = 38, move = "SWORDS_DANCE" },
+			{ level = 42, move = "THUNDER_PUNCH" },
+			{ level = 42, move = "WHIRLWIND" },
+		}, 
+		tms = {
+			"WHIRLWIND", 
+			"SWORDS_DANCE", 
+			"MEGA_KICK", 
+			"COUNTER", 
+			"THUNDERBOLT", 
+			"DOUBLE_TEAM", 
+			"SWIFT", 
+			"SUBSTITUTE"},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/sonic_front.png"),
+		spriteBack = mod.assets:path("assets/sonic_back.png"),
+		frontSize = 5
+	})
+	mod.content.cries:register("SONIC", { file = mod.assets:path("assets/sonic_cry.wav") })
+	mod.content.icons:register("SONIC", { image = mod.assets:path("assets/sonic_icon.wav") })
+	dex_no = dex_no + 1
+	--mod.content.pokemon:register{"S_PLATINUM",}
+	dex_no = dex_no + 1
+
 	-- Area
-	mod.content.encounters:patch("ROUTE_2", {
-	  grass = { slots = { __prepend = { { species = "YOSHI", level = 8 } } } },
+	mod.content.encounters:patch("ROUTE_3", {
+	  grass = { slots = { __prepend = { { species = "GOROCHU", level = 8 } } } },
 	})
+	
+
 	-- Update Pokedex
-	mod.content.constants:patch("dexSize", 153)
+	mod.content.constants:patch("dexSize", dex_no)
 end

@@ -1,9 +1,9 @@
 {
   "id": "fakemon-g1",
   "name": "FakeMon",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "entry": "main.lua",
   "api": 2,
   "category": "POKEMON",
-  "description": "New Pokémon from diverse rumours and stories by Sebarosu. Yoshi Sprites by CFA (TSR)"
+  "description": "New Pokémon from diverse rumours and stories by Sebarosu."
 }
