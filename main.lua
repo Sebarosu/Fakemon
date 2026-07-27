@@ -77,7 +77,7 @@ return function(mod)
 	})
 	mod.content.pokemon:patch( "VENUSAUR", { evolutions = {
 		{
-        item = "LEAF_STONE",
+        item = "MIST_STONE",
         level = 1,
         method = "ITEM",
         species = "SAPUSAUR",
@@ -166,13 +166,13 @@ return function(mod)
 		frontSize = 6,
 		palette = "REDMON"
 	})
-	--mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/sapusaur_cry.wav") })
+	mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/charcolt_cry.wav") })
 	mod.content.icons:register("CHARCOLT", "MON")
 	dex_no = dex_no + 1
 	-- NEW MON: SKELOZARD
 	mod.content.pokemon:patch( "CHARIZARD", { evolutions = {
 		{
-        item = "FIRE_STONE",
+        item = "MIST_STONE",
         level = 1,
         method = "ITEM",
         species = "CHARCOLT",
@@ -186,7 +186,90 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("BLASTOISE", { dex = dex_no })
 	dex_no = dex_no + 1
-	-- NEW MON: RAINER
+	RainDex = "It's said that\nthis POKéMON is\nborn when BLASTOISE\ngets thunderstruck\nin the middle of\na storm. Can des-\ntroy entire cities\nwith their cannons."
+	mod.content.text:register("_RainerDexEntry", RainDex)
+	mod.content.pokemon:register("RAINER", {
+		id = "RAINER",
+		name = "RAINER",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 8,
+			heightIn = 2,
+			kind = "RAINSTORM",
+			weight = 320.8,
+			text = "_RainerDexEntry"},
+		types = { "WATER" },
+		baseStats = { 
+			hp = 106, 
+			attack = 112, 
+			defense = 120, 
+			speed = 90, 
+			special = 130 },
+		catchRate = 3, 
+		baseExp = 255, 
+		growthRate = "MEDIUM_SLOW",
+		level1Moves = { "TACKLE", "TAIL_WHIP" }, 
+		learnset = {
+			{ level = 8, move = "WATER_GUN" },
+			{ level = 16, move = "BITE" },
+			{ level = 23, move = "WITHDRAW" },
+			{ level = 30, move = "SKULL_BASH" },
+			{ level = 36, move = "AMNESIA" },
+			{ level = 42, move = "MIST" },
+			{ level = 48, move = "HYDRO_PUMP" },
+			{ level = 55, move = "ACID_ARMOR" },
+			{ level = 62, move = "HAZE" },
+			{ level = 70, move = "REST" },
+			{ level = 85, move = "EXPLOSION" },
+		}, 
+		tms = {
+			"MEGA_PUNCH",
+			"MEGA_KICK",
+			"TOXIC",
+			"BODY_SLAM",
+			"TAKE_DOWN",
+			"DOUBLE_EDGE",
+			"BUBBLEBEAM",
+			"ICE_BEAM",
+			"BLIZZARD",
+			"HYPER_BEAM",
+			"PAY_DAY",
+			"SUBMISSION",
+			"COUNTER",
+			"SEISMIC_TOSS",
+			"RAGE",
+			"THUNDERBOLT",
+			"THUNDER",
+			"FISSURE",
+			"MIMIC",
+			"DOUBLE_TEAM",
+			"RECLECT",
+			"BIDE",
+			"SELFDESTRUCT",
+			"SKULL_BASH",
+			"REST",
+			"EXPLOSION",
+			"TRI_ATTACK",
+			"SURF",
+			"STRENGTH"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/rainer_front.png"),
+		spriteBack = mod.assets:path("assets/rainer_back.png"),
+		frontSize = 6,
+		palette = "BLUEMON"
+	})
+	mod.content.pokemon:patch( "BLASTOISE", { evolutions = {
+		{
+        item = "MIST_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "RAINER",
+      },
+	}})
+	mod.content.cries:register("RAINER", { file = mod.assets:path("assets/rainer_cry.wav") })
+	mod.content.icons:register("RAINER", "WATER")
+	dex_no = dex_no + 1
 
 	-- Caterpie Line
 	mod.content.pokemon:patch("CATERPIE", { dex = dex_no })
@@ -935,13 +1018,14 @@ return function(mod)
 
 
 	-- Area
-	mod.content.encounters:patch("ROUTE_3", {
-	  grass = { slots = { __prepend = { { species = "KIRBY", level = 5 } } } },
-	  grass = { slots = { __prepend = { { species = "GOROCHU", level = 5 } } } },
+	mod.content.encounters:patch("VIRIDIAN_FOREST", {
+	  grass = { slots = { __prepend = { { species = "YOSHI", level = 5 } } } },
 	})
-	mod.content.encounters:patch("MT_MOON_1F", {
-	  grass = { slots = { __prepend = { { species = "SAPUSAUR", level = 5 } } } },
-	  grass = { slots = { __prepend = { { species = "CHARCOLT", level = 5 } } } },
+	mod.content.encounters:patch("MT_MOON_2F", {
+	  grass = { slots = { __prepend = { { species = "KIRBY", level = 10 } } } },
+	})
+	mod.content.encounters:patch("ROUTE_3", {
+	  grass = { slots = { __prepend = { { species = "RAINER", level = 5 } } } },
 	})
 	
 
