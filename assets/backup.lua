@@ -166,7 +166,7 @@ return function(mod)
 		frontSize = 6,
 		palette = "REDMON"
 	})
-	--mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/sapusaur_cry.wav") })
+	mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/charcolt_cry.wav") })
 	mod.content.icons:register("CHARCOLT", "MON")
 	dex_no = dex_no + 1
 	-- NEW MON: SKELOZARD
@@ -940,8 +940,8 @@ return function(mod)
 	  grass = { slots = { __prepend = { { species = "GOROCHU", level = 5 } } } },
 	})
 	mod.content.encounters:patch("MT_MOON_1F", {
-	  grass = { slots = { __prepend = { { species = "SAPUSAUR", level = 5 } } } },
 	  grass = { slots = { __prepend = { { species = "CHARCOLT", level = 5 } } } },
+	  grass = { slots = { __prepend = { { species = "SAPUSAUR", level = 5 } } } },
 	})
 	
 
