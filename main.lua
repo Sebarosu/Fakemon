@@ -94,6 +94,7 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("CHARIZARD", { dex = dex_no })
 	dex_no = dex_no + 1
+	-- NEW MON: SKELOZARD
 	ColtDex = "Lives in the \nheart of active\nvolcanoes that,\nwhen erupting,\nthey fly away \nat such speed\nno one can no-\ntice them clearly"
 	mod.content.text:register("_CharcoltDexEntry", ColtDex)
 	mod.content.pokemon:register("CHARCOLT", {
@@ -169,7 +170,6 @@ return function(mod)
 	mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/charcolt_cry.wav") })
 	mod.content.icons:register("CHARCOLT", "MON")
 	dex_no = dex_no + 1
-	-- NEW MON: SKELOZARD
 	mod.content.pokemon:patch( "CHARIZARD", { evolutions = {
 		{
         item = "MIST_STONE",
@@ -1022,10 +1022,10 @@ return function(mod)
 	  grass = { slots = { __prepend = { { species = "YOSHI", level = 5 } } } },
 	})
 	mod.content.encounters:patch("MT_MOON_2F", {
-	  grass = { slots = { __prepend = { { species = "KIRBY", level = 10 } } } },
+	  grass = { slots = { __prepend = { { species = "KIRBY", level = 8 } } } },
 	})
-	mod.content.encounters:patch("ROUTE_3", {
-	  grass = { slots = { __prepend = { { species = "RAINER", level = 5 } } } },
+	mod.content.encounters:patch("ROUTE_24", {
+	  grass = { slots = { __prepend = { { species = "SONIC", level = 10 } } } },
 	})
 	
 
