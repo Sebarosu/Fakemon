@@ -6,6 +6,11 @@ return function(mod)
 		name = "MIST STONE",
 		price = 4200,
 	})
+	mod.content.text_pointers:patch("CeladonMart4FClerkText", {
+		TEXT_VIRIDIANMART_CLERK = {
+			mart = { __append = { "MIST_STONE" } },
+		},
+	})
 
 	dex_no = 1
 
@@ -466,6 +471,10 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("PERSIAN", { dex = dex_no })
 	dex_no = dex_no + 1
+
+	-- Pikablu Line
+	-- NEW MON: PIKABLU
+	-- NEW MON: AZURAI
 
 	-- Psyduck Line
 	mod.content.pokemon:patch("PSYDUCK", { dex = dex_no })

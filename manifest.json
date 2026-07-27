@@ -1,7 +1,7 @@
 {
   "id": "fakemon-g1",
   "name": "FakeMon",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "entry": "main.lua",
   "api": 2,
   "category": "POKEMON",
