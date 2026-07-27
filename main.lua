@@ -605,6 +605,8 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GENGAR", { dex = dex_no })
 	dex_no = dex_no + 1
+	-- NEW MON: PHAMTO
+	-- NEW MON: SPUKIE
 
 	-- Onix Line
 	mod.content.pokemon:patch("ONIX", { dex = dex_no })
@@ -826,7 +828,7 @@ return function(mod)
 		dexEntry = { 
 		heightFt = 4,
 		heightIn = 4,
-		kind = "DINO",
+		kind = "DINOSAUR",
 		weight = 68.3,
 		text = "_YoshiDexEntry"},
 		types = { "DRAGON", "FLYING" },
@@ -1030,7 +1032,7 @@ return function(mod)
 	mod.content.encounters:patch("VIRIDIAN_FOREST", {
 	  grass = { slots = { __prepend = { { species = "YOSHI", level = 5 } } } },
 	})
-	mod.content.encounters:patch("MT_MOON_2F", {
+	mod.content.encounters:patch("MT_MOON_B1F", {
 	  grass = { slots = { __prepend = { { species = "KIRBY", level = 8 } } } },
 	})
 	mod.content.encounters:patch("ROUTE_24", {
