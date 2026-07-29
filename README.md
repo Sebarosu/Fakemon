@@ -8,6 +8,9 @@ to well-known and brand new crossover creatures you never thought you'd see in a
 - Charcolt: Fire Dragon Pokémon. Obtainable by giving Charizard a Mist Stone.
 - Rainer: Rainstorm Pokémon. Obtainable by giving Blastoise a Mist Stone.
 - Gorochu: Intense Mouse Pokémon. Obtainable by giving Pikachu a Fire Stone.
+- Pikablu: Pink Mouse Pokémon. Obtainable in Route 3.
+- Azurai: Purple Rabbit Pokémon. Evolution of Pikablu.
+- Jaggs: Shark Pokémon. Obtainable in Route 21.
 - Yoshi: Dinosaur Pokémon. Obtainable in Viridian Forest.
 - Kirby: Stellar Pokémon. Obtainable in Mt. Moon.
 - Sonic: Hedgehog Pokémon. Obtainable in Route 24.
