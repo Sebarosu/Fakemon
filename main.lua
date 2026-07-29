@@ -321,7 +321,7 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("RAICHU", { dex = dex_no })
 	dex_no = dex_no + 1
-	GoroDex = "GOROCHU is competitive\nby nature. Uses\ntheir two big\ntails, charged\nwith electricity\nto attack. Lives\nin hot areas."
+	GoroDex = "Is competitive\nby nature. Uses\ntheir two big\ntails, charged\nwith electricity\nto attack. Lives\nin hot areas."
 	mod.content.text:register("_GorochuDexEntry", GoroDex)
 	mod.content.pokemon:register("GOROCHU", {
 		id = "GOROCHU",
@@ -537,7 +537,7 @@ return function(mod)
 	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu_cry.wav") })
 	mod.content.icons:register("PIKABLU", "FAIRY")
 	dex_no = dex_no + 1
-	AzurDez = "When it plays\nin water, it rolls\nup its enlongated\nears to prevent\ntheir insides from\ngetting wet."
+	AzurDex = "When it plays\nin water, it rolls\nup its enlongated\nears to prevent\ntheir insides from\ngetting wet."
 	mod.content.text:register("_AzuraiDexEntry", AzurDex)
 	mod.content.pokemon:register("AZURAI", {
 		id = "AZURAI",
@@ -595,10 +595,9 @@ return function(mod)
 		frontSize = 4,
 		palette = "PURPLEMON"
 	})
-	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu_cry.wav") })
-	mod.content.icons:register("PIKABLU", "FAIRY")
+	mod.content.cries:register("AZURAI", { file = mod.assets:path("assets/pikablu_cry.wav") })
+	mod.content.icons:register("AZURAI", "FAIRY")
 	dex_no = dex_no + 1
-	-- NEW MON: AZURAI
 
 	-- Psyduck Line
 	mod.content.pokemon:patch("PSYDUCK", { dex = dex_no })
@@ -1073,7 +1072,7 @@ return function(mod)
 	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi_cry.wav") })
 	mod.content.icons:register("YOSHI", { image = mod.assets:path("assets/yoshi_icon.png") })
 	dex_no = dex_no + 1
-	KirbyDex = "He absorbs his\nenemies by inhaling\nthem and copies\ninstantly their\ntechinques. His\nballoon-like\nbody allows him\to fly without end."
+	KirbyDex = "He absorbs his\nenemies inhaling\nthem and copies\ntheir moves.\nHis balloon-\nlike body makes\nhim fly endlessly."
 	mod.content.text:register("_KirbyDexEntry", KirbyDex)
 	mod.content.pokemon:register("KIRBY", {
 		id = "KIRBY", 
@@ -1160,7 +1159,7 @@ return function(mod)
 	mod.content.cries:register("KIRBY", { file = mod.assets:path("assets/kirby_cry.wav") })
 	mod.content.icons:register("KIRBY", "FAIRY")
 	dex_no = dex_no + 1
-	SonicDex = "It's the fastest\nliving being\never detected\nuntil the moment.\nPrefers being\non green hills\nand totally hates\nmachines."
+	SonicDex = "It's the fastest\nliving being\never detected\nuntil the moment.\nPrefers being\non green hills\nand hates machines."
 	mod.content.text:register("_SonicDexEntry", SonicDex)
 	mod.content.pokemon:register("SONIC", {
 		id = "SONIC", 
@@ -1191,6 +1190,8 @@ return function(mod)
 			{ level = 38, move = "SWORDS_DANCE" },
 			{ level = 42, move = "THUNDER_PUNCH" },
 			{ level = 42, move = "WHIRLWIND" },
+			{ level = 50, move = "SONICBOOM" },
+			{ level = 56, move = "MEGA_KICK"}
 		}, 
 		tms = {
 			"WHIRLWIND", 
@@ -1234,8 +1235,152 @@ return function(mod)
 
 
 	-- Area
-	mod.content.encounters:patch("VIRIDIAN_FOREST", {
-	  grass = { slots = { __prepend = { { species = "YOSHI", level = 5 } } } },
+	mod.content.encounters:override("ROUTE_1", {
+	  
+	})
+	mod.content.encounters:override("ROUTE_2", {
+	  grass = {
+		rate = 25,
+		slots = {
+			{
+			level = 3,
+			species = "RATTATA",
+			},
+			{
+			level = 3,
+			species = "PIDGEY",
+			},
+			{
+			level = 4,
+			species = "PIDGEY",
+			},
+			{
+			level = 4,
+			species = "RATTATA",
+			},
+			{
+			level = 5,
+			species = "PIDGEY",
+			},
+			{
+			level = 3,
+			species = "YOSHI",
+			},
+			{
+			level = 2,
+			species = "RATTATA",
+			},
+			{
+			level = 5,
+			species = "RATTATA",
+			},
+			{
+			level = 4,
+			species = "YOSHI",
+			},
+			{
+			level = 5,
+			species = "YOSHI",
+			},
+		},
+		},
+		source = "ROM:03:50F5",
+	})
+	mod.content.encounters:override("VIRIDIAN_FOREST", {
+	  grass = {
+		rate = 8,
+		slots = {
+			{
+			level = 4,
+			species = "WEEDLE",
+			},
+			{
+			level = 5,
+			species = "KAKUNA",
+			},
+			{
+			level = 3,
+			species = "WEEDLE",
+			},
+			{
+			level = 5,
+			species = "WEEDLE",
+			},
+			{
+			level = 4,
+			species = "KAKUNA",
+			},
+			{
+			level = 6,
+			species = "KAKUNA",
+			},
+			{
+			level = 4,
+			species = "METAPOD",
+			},
+			{
+			level = 3,
+			species = "CATERPIE",
+			},
+			{
+			level = 3,
+			species = "YOSHI",
+			},
+			{
+			level = 5,
+			species = "PIKACHU",
+			},
+		},
+		},
+		source = "ROM:03:5121",
+	})
+	mod.content.encounters:override("ROUTE_3", {
+	  grass = {
+		rate = 20,
+		slots = {
+			{
+			level = 6,
+			species = "PIKABLU",
+			},
+			{
+			level = 5,
+			species = "SPEAROW",
+			},
+			{
+			level = 7,
+			species = "PIKABLU",
+			},
+			{
+			level = 6,
+			species = "SPEAROW",
+			},
+			{
+			level = 7,
+			species = "SPEAROW",
+			},
+			{
+			level = 8,
+			species = "PIKABLU",
+			},
+			{
+			level = 8,
+			species = "SPEAROW",
+			},
+			{
+			level = 3,
+			species = "JIGGLYPUFF",
+			},
+			{
+			level = 5,
+			species = "JIGGLYPUFF",
+			},
+			{
+			level = 7,
+			species = "JIGGLYPUFF",
+			},
+		},
+		},
+		source = "ROM:03:5137",
 	})
 	mod.content.encounters:patch("MT_MOON_B1F", {
 	  grass = { slots = { __prepend = { { species = "KIRBY", level = 8 } } } },
@@ -1246,12 +1391,7 @@ return function(mod)
 	mod.content.encounters:patch("ROUTE_21", {
 	  water = { slots = { __prepend = { { species = "JAGGS", level = 30 } } } },
 	})
-	mod.content.encounters:patch("ROUTE_3", {
-		 grass = { slots = { __prepend = { { species = "PIKABLU", level = 8 } } } },
-	})
-	mod.content.encounters:patch("MT_MOON_1F", {
-	  grass = { slots = { __prepend = { { species = "JAGGS", level = 8 } } } },
-	})
+	
 
 	-- Custom Pokémon League
 	-- Luigi
