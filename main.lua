@@ -2,16 +2,13 @@ return function(mod)
 	-- Add Items
 	mod.content.items:register("MIST_STONE", {
 		id = "MIST_STONE",
-		index = 98,
 		name = "MIST STONE",
 		price = 4200,
+		tossable = true,
 	})
-	mod.content.text_pointers:patch("CeladonMart4FClerkText", {
-		TEXT_CELADONMART4F_CLERK = {
-			mart = { __append = { "MIST_STONE" } },
-		},
+	mod.content.text_pointers:patch("CeladonMart4F", {
+		TEXT_CELADONMART4F_CLERK = { mart = { __append = { "MIST_STONE" } } },
 	})
-
 	dex_no = 1
 
 	-- Bulbasaur Line
@@ -473,7 +470,134 @@ return function(mod)
 	dex_no = dex_no + 1
 
 	-- Pikablu Line
-	-- NEW MON: PIKABLU
+	BluDex = "Naturallly found in\nrainforests and\ndesert oasis'.\nDespite the pink\ncolour, his name\ncame out of\ncolor-blindness."
+	mod.content.text:register("_PikabluDexEntry", BluDex)
+	mod.content.pokemon:register("PIKABLU", {
+		id = "PIKABLU",
+		name = "PIKABLU",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 1,
+			heightIn = 4,
+			kind = "PINK MOUSE",
+			weight = 18.7,
+			text = "_PikabluDexEntry"},
+		types = { "WATER" },
+		baseStats = { 
+			hp = 70, 
+			attack = 20, 
+			defense = 50, 
+			speed = 40, 
+			special = 35 },
+		catchRate = 190, 
+		baseExp = 58, 
+		growthRate = "FAST",
+		level1Moves = { "TACKLE"}, 
+		learnset = {
+			{ level = 3, move = "DEFENSE_CURL"},
+			{ level = 6, move = "TAIL_WHIP" },
+			{ level = 10, move = "WATER_GUN" },
+			{ level = 15, move = "ROLLOUT" },
+			{ level = 21, move = "BUBBLEBEAM" },
+			{ level = 28, move = "DOUBLE_EDGE" },
+			{ level = 36, move = "WATERFALL" },
+		}, 
+		tms = {
+			"MEGA_PUNCH",
+			"WHIRLWIND",
+			"MEGA_KICK",
+			"DOUBLE_EDGE",
+			"BUBBLEBEAM",
+			"WATER_GUN",
+			"ICE_BEAM",
+			"BLIZZARD",
+			"COUNTER",
+			"MIMIC",
+			"DOUBLE_TEAM",
+			"RECLECT",
+			"METRONOME",
+			"SKULL_BASH",
+			"REST",
+			"EXPLOSION",
+			"SUBSTITUTE",
+			"SURF"
+		},
+		evolutions = {
+			{
+				level = 18,
+				method = "LEVEL",
+				species = "AZURAI",
+			},
+		},
+		spriteFront = mod.assets:path("assets/pikablu_front.png"),
+		spriteBack = mod.assets:path("assets/pikablu_back.png"),
+		frontSize = 3,
+		palette = "PINKMON"
+	})
+	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu_cry.wav") })
+	mod.content.icons:register("PIKABLU", "FAIRY")
+	dex_no = dex_no + 1
+	AzurDez = "When it plays\nin water, it rolls\nup its enlongated\nears to prevent\ntheir insides from\ngetting wet."
+	mod.content.text:register("_AzuraiDexEntry", AzurDex)
+	mod.content.pokemon:register("AZURAI", {
+		id = "AZURAI",
+		name = "AZURAI",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 2,
+			heightIn = 7,
+			kind = "PURPLERABBIT",
+			weight = 62.8,
+			text = "_AzuraiDexEntry"},
+		types = { "WATER" },
+		baseStats = { 
+			hp = 100, 
+			attack = 50, 
+			defense = 80, 
+			speed = 50, 
+			special = 70 },
+		catchRate = 75, 
+		baseExp = 153, 
+		growthRate = "FAST",
+		level1Moves = { "TACKLE", "DEFENSE_CURL", "TAIL_WHIP", "WATER_GUN" }, 
+		learnset = {
+			{ level = 3, move = "DEFENSE_CURL"},
+			{ level = 6, move = "TAIL_WHIP" },
+			{ level = 10, move = "WATER_GUN" },
+			{ level = 15, move = "ROLLOUT" },
+			{ level = 25, move = "BUBBLEBEAM" },
+			{ level = 36, move = "DOUBLE_EDGE" },
+			{ level = 48, move = "WATERFALL" },
+		}, 
+		tms = {
+			"MEGA_PUNCH",
+			"WHIRLWIND",
+			"MEGA_KICK",
+			"DOUBLE_EDGE",
+			"BUBBLEBEAM",
+			"WATER_GUN",
+			"ICE_BEAM",
+			"BLIZZARD",
+			"COUNTER",
+			"MIMIC",
+			"DOUBLE_TEAM",
+			"RECLECT",
+			"METRONOME",
+			"SKULL_BASH",
+			"REST",
+			"EXPLOSION",
+			"SUBSTITUTE",
+			"SURF"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/pikablu_front.png"),
+		spriteBack = mod.assets:path("assets/pikablu_back.png"),
+		frontSize = 4,
+		palette = "PURPLEMON"
+	})
+	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu_cry.wav") })
+	mod.content.icons:register("PIKABLU", "FAIRY")
+	dex_no = dex_no + 1
 	-- NEW MON: AZURAI
 
 	-- Psyduck Line
