@@ -7,7 +7,7 @@ return function(mod)
 		price = 4200,
 	})
 	mod.content.text_pointers:patch("CeladonMart4FClerkText", {
-		TEXT_VIRIDIANMART_CLERK = {
+		TEXT_CELADONMART4F_CLERK = {
 			mart = { __append = { "MIST_STONE" } },
 		},
 	})
@@ -527,8 +527,69 @@ return function(mod)
 	-- Caktoos Line
 	-- NEW MON: CAKTOOS
 
-	-- Jagg Line
-	-- NEW MON: JAGG
+	-- Jaggs Line
+	JaggDex = "Patrols through\ndeep seas\nguided by the\ncharacteristic\nnose. It can\neven go through\na ship's hull."
+	mod.content.text:register("_JaggsDexEntry", JaggDex)
+	mod.content.pokemon:register("JAGGS", {
+		id = "JAGGS",
+		name = "JAGGS",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 6,
+			heightIn = 7,
+			kind = "SHARK",
+			weight = 187.4,
+			text = "_JaggsDexEntry"},
+		types = { "WATER" },
+		baseStats = { 
+			hp = 65, 
+			attack = 100, 
+			defense = 60, 
+			speed = 105, 
+			special = 60 },
+		catchRate = 60, 
+		baseExp = 162, 
+		growthRate = "MEDIUM_FAST",
+		level1Moves = { "TACKLE", "GROWL" }, 
+		learnset = {
+			{ level = 7, move = "WATER_GUN" },
+			{ level = 12, move = "FURY_ATTACK" },
+			{ level = 17, move = "BITE" },
+			{ level = 22, move = "ENERGY_FOCUS" },
+			{ level = 27, move = "TAKE_DOWN" },
+			{ level = 33, move = "SCREECH" },
+			{ level = 39, move = "HYDRO_PUMP" },
+			{ level = 45, move = "SKULL_BASH" },
+		}, 
+		tms = {
+			"TOXIC", 
+			"HORN_DRILL",
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"BUBBLEBEAM",
+			"ICE_BEAM",
+			"BLIZZARD",
+			"HYPER_BEAM", 
+			"COUNTER",
+			"RAGE", 
+			"MIMIC", 
+			"DOUBLE_TEAM", 
+			"BIDE", 
+			"REST", 
+			"THUNDER_WAVE",
+			"SURF",
+			"STRENGTH"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/jaggs_front.png"),
+		spriteBack = mod.assets:path("assets/jaggs_back.png"),
+		frontSize = 6,
+		palette = "BLUEMON"
+	})
+	mod.content.cries:register("JAGGS", { file = mod.assets:path("assets/jaggs_cry.wav") })
+	mod.content.icons:register("JAGGS", "WATER")
+	dex_no = dex_no + 1
 
 	-- Bellsprout Line
 	mod.content.pokemon:patch("BELLSPROUT", { dex = dex_no })
@@ -537,6 +598,7 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VICTREEBEL", { dex = dex_no })
 	dex_no = dex_no + 1
+	-- NEW MON: MEGABELL
 
 	-- Tentacool Line
 	mod.content.pokemon:patch("TENTACOOL", { dex = dex_no })
@@ -838,7 +900,7 @@ return function(mod)
 		defense = 70, 
 		speed = 95, 
 		special = 75 },
-		catchRate = 45, 
+		catchRate = 60, 
 		baseExp = 155, 
 		growthRate = "SLOW",
 		level1Moves = { "TACKLE", "GROWL" }, 
@@ -906,7 +968,7 @@ return function(mod)
 		defense = 70, 
 		speed = 90, 
 		special =100 },
-		catchRate = 3, 
+		catchRate = 60, 
 		baseExp = 195, 
 		growthRate = "SLOW",
 		level1Moves = { "TACKLE", "DFENSE_CURL",  }, 
@@ -974,7 +1036,7 @@ return function(mod)
 	mod.content.cries:register("KIRBY", { file = mod.assets:path("assets/kirby_cry.wav") })
 	mod.content.icons:register("KIRBY", "FAIRY")
 	dex_no = dex_no + 1
-	SonicDex = "Fastest thing Alive! \nKnight of the Wind."
+	SonicDex = "It's the fastest\nliving being\never detected\nuntil the moment.\nPrefers being\non green hills\nand totally hates\nmachines."
 	mod.content.text:register("_SonicDexEntry", SonicDex)
 	mod.content.pokemon:register("SONIC", {
 		id = "SONIC", 
@@ -993,7 +1055,7 @@ return function(mod)
 		defense = 35, 
 		speed = 140, 
 		special = 75 },
-		catchRate = 120, 
+		catchRate = 60, 
 		baseExp = 100, 
 		growthRate = "SLOW",
 		level1Moves = { "QUICK_ATTACK", "TAIL_WHIP",  }, 
@@ -1024,7 +1086,26 @@ return function(mod)
 	mod.content.cries:register("SONIC", { file = mod.assets:path("assets/sonic_cry.wav") })
 	mod.content.icons:register("SONIC", { image = mod.assets:path("assets/sonic_icon.png") })
 	dex_no = dex_no + 1
+	-- NEW MON: DEDEDE
+	-- NEW MON: META_KNIGHT
+	-- NEW MON: K_ROOL
+	-- Kracko Line
+	-- NEW MON: CO_KRACKO
+	-- NEW MON: KRACKO_JR
+	-- NEW MON: KRACKO
+	-- NEW MON: MOTOBUG
+	-- NEW MON: YUMETARO
+	-- Animatronic Line
+	-- NEW MON: FREDDY
+	-- NEW MON: G_FREDDY
+	-- NEW MON: BONNIE
+	-- NEW MON: CHICA
+	-- NEW MON: FOXY
+	-- NEW MON: BONNIE
 	-- NEW MON: GARFIELD
+	-- NEW MON: SQUASH
+	-- NEW MON: IMITATER
+	-- NEW MON: STITCH
 	-- NEW MON: S_PLATINUM
 
 
@@ -1038,6 +1119,19 @@ return function(mod)
 	mod.content.encounters:patch("ROUTE_24", {
 	  grass = { slots = { __prepend = { { species = "SONIC", level = 10 } } } },
 	})
+	--mod.content.encounters:patch("ROUTE_21", {
+	  --water = { slots = { __prepend = { { species = "JAGGS", level = 30 } } } },
+	--})
+	mod.content.encounters:patch("MT_MOON_1F", {
+	  grass = { slots = { __prepend = { { species = "JAGGS", level = 8 } } } },
+	})
+
+	-- Custom Pokémon League
+	-- Luigi
+	-- Jotaro
+	-- Afton
+	-- Miku
+	-- Red
 	
 
 	-- Update Pokedex
