@@ -1243,9 +1243,12 @@ return function(mod)
 	mod.content.encounters:patch("ROUTE_24", {
 	  grass = { slots = { __prepend = { { species = "SONIC", level = 10 } } } },
 	})
-	--mod.content.encounters:patch("ROUTE_21", {
-	  --water = { slots = { __prepend = { { species = "JAGGS", level = 30 } } } },
-	--})
+	mod.content.encounters:patch("ROUTE_21", {
+	  water = { slots = { __prepend = { { species = "JAGGS", level = 30 } } } },
+	})
+	mod.content.encounters:patch("ROUTE_3", {
+		 grass = { slots = { __prepend = { { species = "PIKABLU", level = 8 } } } },
+	})
 	mod.content.encounters:patch("MT_MOON_1F", {
 	  grass = { slots = { __prepend = { { species = "JAGGS", level = 8 } } } },
 	})
