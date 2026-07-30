@@ -1,0 +1,9 @@
+{
+  "id": "fakemon-g1-esp",
+  "name": "FakeMon",
+  "version": "0.2.1",
+  "entry": "main.lua",
+  "api": 2,
+  "category": "POKEMON",
+  "description": "Nuevos Pokémon de diversos rumores e historias por Sebarosu."
+}

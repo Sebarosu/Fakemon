@@ -2,7 +2,7 @@ return function(mod)
 	-- Add Items
 	mod.content.items:register("MIST_STONE", {
 		id = "MIST_STONE",
-		name = "MIST STONE",
+		name = "PIEDRA NIEBLA",
 		price = 4200,
 		tossable = true,
 	})
@@ -18,7 +18,7 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VENUSAUR", { dex = dex_no })
 	dex_no = dex_no + 1
-	SapuDex = "A POKéMON as\nhuge as a buil-\nding, with a\ntropical tree\non his back \nthat, on bigger\n beings, becomes \nan entire forest."
+	SapuDex = "Un POKéMON grande\ncomo un edificio,\ncon un árbol\ntropical en el\nlomo que, en\nejemplares más\ngrandes, se\nvuelve un bosque\nentero."
 	mod.content.text:register("_SapusaurDexEntry", SapuDex)
 	mod.content.pokemon:register("SAPUSAUR", {
 		id = "SAPUSAUR",
@@ -27,7 +27,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 19,
 			heightIn = 8,
-			kind = "OVERGROWTH",
+			kind = "MALEZA",
 			weight = 2204.6,
 			text = "_SapusaurDexEntry"},
 		types = { "PLANT", "POISON" },
@@ -97,7 +97,7 @@ return function(mod)
 	mod.content.pokemon:patch("CHARIZARD", { dex = dex_no })
 	dex_no = dex_no + 1
 	-- NEW MON: SKELOZARD
-	ColtDex = "Lives in the \nheart of active\nvolcanoes that,\nwhen erupting,\nthey fly away \nat such speed\nno one can no-\ntice them clearly"
+	ColtDex = "Vive en el cora-\nzón de volcanes\nactivos que,\ncuando eruptan,\nhuye volando\na tal velocidad\nque nadie puede\npercibirlo con\nclaridad."
 	mod.content.text:register("_CharcoltDexEntry", ColtDex)
 	mod.content.pokemon:register("CHARCOLT", {
 		id = "CHARCOLT",
@@ -106,7 +106,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 8,
 			heightIn = 6,
-			kind = "FIREDRAGON",
+			kind = "DRAGÓN FUEGO",
 			weight = 254.6,
 			text = "_CharcoltDexEntry"},
 		types = { "FIRE", "DRAGON" },
@@ -188,7 +188,7 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("BLASTOISE", { dex = dex_no })
 	dex_no = dex_no + 1
-	RainDex = "It's said that\nthis POKéMON is\nborn when BLASTOISE\ngets thunderstruck\nin the middle of\na storm. Can des-\ntroy entire cities\nwith their cannons."
+	RainDez = "Se dice que este\nPOKéMON nace\ncuando a BLASTOISE\nle alcanza un rayo\nen plena tormenta.\nPuede destro-\nzar ciudades\nenteras con sus\ncañones."
 	mod.content.text:register("_RainerDexEntry", RainDex)
 	mod.content.pokemon:register("RAINER", {
 		id = "RAINER",
@@ -197,7 +197,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 8,
 			heightIn = 2,
-			kind = "RAINSTORM",
+			kind = "TORMENTA",
 			weight = 320.8,
 			text = "_RainerDexEntry"},
 		types = { "WATER" },
@@ -321,7 +321,7 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("RAICHU", { dex = dex_no })
 	dex_no = dex_no + 1
-	GoroDex = "Is competitive\nby nature. Uses\ntheir two big\ntails, charged\nwith electricity\nto attack. Lives\nin hot areas."
+	GoroDex = "GOROCHU es\ncompetitivo por\nnaturaleza.\nUsa sus dos\ngrandes colas,\ncargadas de elec-\ntricidad, para\natacar. Vive\n en zonas cálidas."
 	mod.content.text:register("_GorochuDexEntry", GoroDex)
 	mod.content.pokemon:register("GOROCHU", {
 		id = "GOROCHU",
@@ -330,7 +330,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 3,
 			heightIn = 7,
-			kind = "INT. MOUSE",
+			kind = "RATA INTENSA",
 			weight = 84.6,
 			text = "_GorochuDexEntry"},
 		types = { "ELECRTIC", "FIRE" },
@@ -470,7 +470,7 @@ return function(mod)
 	dex_no = dex_no + 1
 
 	-- Pikablu Line
-	BluDex = "Naturallly found in\nrainforests and\ndesert oasis'.\nDespite the pink\ncolour, his name\ncame out of\ncolor-blindness."
+	BluDex = "Se suele encontrar\nen los bosques y\noasis desérticos.\nPese a su piel\nrosada, su nombre\ntiene origen en\nel daltonismo."
 	mod.content.text:register("_PikabluDexEntry", BluDex)
 	mod.content.pokemon:register("PIKABLU", {
 		id = "PIKABLU",
@@ -479,7 +479,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 1,
 			heightIn = 4,
-			kind = "PINK MOUSE",
+			kind = "RATÓN ROSA",
 			weight = 18.7,
 			text = "_PikabluDexEntry"},
 		types = { "WATER" },
@@ -537,7 +537,7 @@ return function(mod)
 	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu_cry.wav") })
 	mod.content.icons:register("PIKABLU", "FAIRY")
 	dex_no = dex_no + 1
-	AzurDex = "When it plays\nin water, it rolls\nup its enlongated\nears to prevent\ntheir insides from\ngetting wet."
+	AzurDex = "Cuando juega en\nel agua, enrosca\nsus alargadas orejas\npara evitar que\nsus partes internas\nse mojen."
 	mod.content.text:register("_AzuraiDexEntry", AzurDex)
 	mod.content.pokemon:register("AZURAI", {
 		id = "AZURAI",
@@ -546,7 +546,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 2,
 			heightIn = 7,
-			kind = "PURPLERABBIT",
+			kind = "CONEJO LILA",
 			weight = 62.8,
 			text = "_AzuraiDexEntry"},
 		types = { "WATER" },
@@ -651,7 +651,7 @@ return function(mod)
 	-- NEW MON: CAKTOOS
 
 	-- Jaggs Line
-	JaggDex = "Patrols through\ndeep seas\nguided by the\ncharacteristic\nnose. It can\neven go through\na ship's hull."
+	JaggDex = "Patrulla por\naguas profundas\nguiado por su\ncaracterístico\nhocico. Puede\natravesar\nhasta cascos\nde navíos."
 	mod.content.text:register("_JaggsDexEntry", JaggDex)
 	mod.content.pokemon:register("JAGGS", {
 		id = "JAGGS",
@@ -721,7 +721,6 @@ return function(mod)
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VICTREEBEL", { dex = dex_no })
 	dex_no = dex_no + 1
-	-- NEW MON: MEGABELL
 
 	-- Tentacool Line
 	mod.content.pokemon:patch("TENTACOOL", { dex = dex_no })
@@ -886,7 +885,7 @@ return function(mod)
 	dex_no = dex_no + 1
 
 	-- Balloonda Line
-	BalloonDex = "Can float without\neffort even\nin hurricanes.\nHides in street\nstands hoping for a\nchild to take him."
+	BalloonDex = "Flota sin esfuerzo\nincluso en medio\nde huracanes.\nSe esconde en puestos\ncallejeros anhelando\nque un niño lo tomes."
 	mod.content.text:register("_BalloondaDexEntry", BalloonDex)
 	mod.content.pokemon:register("BALLOONDA", {
 		id = "BALLOONDA",
@@ -895,7 +894,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 0,
 			heightIn = 4,
-			kind = "BALLOON",
+			kind = "GLOBO",
 			weight = 2.2,
 			text = "_BalloondaDexEntry"},
 		types = { "FLYING" },
@@ -949,7 +948,7 @@ return function(mod)
 		palette = "PINKMON"
 	})
 	mod.content.cries:register("BALLOONDA", { file = mod.assets:path("assets/ballonda_cry.wav") })
-	mod.content.icons:register("BALLOONDA", "BALL")
+	mod.content.icons:register("BALLOONDA", "FAIRY")
 	dex_no = dex_no + 1
 
 	-- Scyther Line
@@ -1068,7 +1067,7 @@ return function(mod)
 	-- NEW MON: BETARCEUS
 
 	-- Crossover Line
-	YoshiDex = "He catches enemies \nwith his long ton-\ngue and turns them \ninto eggs,to then \nthrow them like \nproyectiles."
+	YoshiDex = "Atrapa a sus\nenemigos con su\nlengua larga\ny los convierte\nen huevos, para\nluego lanzarlos\ncomo proyecti-\nles."
 	mod.content.text:register("_YoshiDexEntry", YoshiDex)
 	mod.content.pokemon:register("YOSHI", {
 		id = "YOSHI", 
@@ -1077,7 +1076,7 @@ return function(mod)
 		dexEntry = { 
 		heightFt = 4,
 		heightIn = 4,
-		kind = "DINOSAUR",
+		kind = "DINOSAURIO",
 		weight = 68.3,
 		text = "_YoshiDexEntry"},
 		types = { "DRAGON", "FLYING" },
@@ -1136,7 +1135,7 @@ return function(mod)
 	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi_cry.wav") })
 	mod.content.icons:register("YOSHI", { image = mod.assets:path("assets/yoshi_icon.png") })
 	dex_no = dex_no + 1
-	KirbyDex = "He absorbs his\nenemies inhaling\nthem and copies\ntheir moves.\nHis balloon-\nlike body makes\nhim fly endlessly."
+	KirbyDex = "Absorbe a sus\nenemigos inha-\nlando grandes\nbocanadas de\naire y copia\nsus mov. al\nInstante. Su\ncuerpo de globo\nle permite flo-\ntar sin fin."
 	mod.content.text:register("_KirbyDexEntry", KirbyDex)
 	mod.content.pokemon:register("KIRBY", {
 		id = "KIRBY", 
@@ -1145,7 +1144,7 @@ return function(mod)
 		dexEntry = { 
 		heightFt = 0,
 		heightIn = 8,
-		kind = "STELLAR",
+		kind = "ESTELAR",
 		weight = 2.2,
 		text = "_KirbyDexEntry"},
 		types = { "NORMAL", "FLYING" }, 
@@ -1188,7 +1187,7 @@ return function(mod)
 			"TOXIC", 
 			"BODY_SLAM", 
 			"DOUBLE_EDGE", 
-			"BUBBLEBEAM", 
+			"BUBBLE_BEAM", 
 			"WATER_GUN", 
 			"ICE_BEAM",
 			"BLIZZARD",
@@ -1223,7 +1222,7 @@ return function(mod)
 	mod.content.cries:register("KIRBY", { file = mod.assets:path("assets/kirby_cry.wav") })
 	mod.content.icons:register("KIRBY", "FAIRY")
 	dex_no = dex_no + 1
-	SonicDex = "It's the fastest\nliving being\never detected\nuntil the moment.\nPrefers being\non green hills\nand hates machines."
+	SonicDex = "Es el ser vivo\nmás rápido de-\ntectado hasta\nel momento.\nPrefiere habitar\nprados verdes\ny detesta las\nmáquinas en\nsu totalidad."
 	mod.content.text:register("_SonicDexEntry", SonicDex)
 	mod.content.pokemon:register("SONIC", {
 		id = "SONIC", 
@@ -1232,7 +1231,7 @@ return function(mod)
 		dexEntry = { 
 		heightFt = 2,
 		heightIn = 4,
-		kind = "HEDGEHOG",
+		kind = "ERIZO",
 		weight = 30.0,
 		text = "_SonicDexEntry"},
 		types = { "ELECTRIC", "FIGHTING" }, 
@@ -1444,52 +1443,7 @@ return function(mod)
 		source = "ROM:03:5137",
 	})
 	mod.content.encounters:patch("MT_MOON_B1F", {
-	  grass = {
-		rate = 10,
-		slots = {
-			{
-			level = 8,
-			species = "ZUBAT",
-			},
-			{
-			level = 7,
-			species = "ZUBAT",
-			},
-			{
-			level = 9,
-			species = "ZUBAT",
-			},
-			{
-			level = 8,
-			species = "GEODUDE",
-			},
-			{
-			level = 6,
-			species = "KIRBY",
-			},
-			{
-			level = 10,
-			species = "KIRBY",
-			},
-			{
-			level = 10,
-			species = "GEODUDE",
-			},
-			{
-			level = 8,
-			species = "PARAS",
-			},
-			{
-			level = 11,
-			species = "KIRBY",
-			},
-			{
-			level = 8,
-			species = "CLEFAIRY",
-			},
-		},
-		},
-		source = "ROM:03:514D",
+	  grass = { slots = { __prepend = { { species = "KIRBY", level = 8 } } } },
 	})
 	mod.content.encounters:patch("ROUTE_24", {
 	  grass = { slots = { __prepend = { { species = "SONIC", level = 10 } } } },
