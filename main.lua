@@ -30,7 +30,7 @@ return function(mod)
 			kind = "OVERGROWTH",
 			weight = 2204.6,
 			text = "_SapusaurDexEntry"},
-		types = { "PLANT", "POISON" },
+		types = { "GRASS", "POISON" },
 		baseStats = { 
 			hp = 130, 
 			attack = 105, 
@@ -48,7 +48,7 @@ return function(mod)
 			{ level = 30, move = "RAZOR_LEAF" },
 			{ level = 38, move = "MIST" },
 			{ level = 43, move = "GROWTH" },
-			{ level = 48, move = "STUN_POWDER" },
+			{ level = 48, move = "STUN_SPORE" },
 			{ level = 55, move = "SLEEP_POWDER" },
 			{ level = 58, move = "SLUDGE" },
 			{ level = 65, move = "SOLARBEAM" },
@@ -157,7 +157,7 @@ return function(mod)
 			"HEADBUTT",
 			"SKY_ATTACK",
 			"REST", 
-			"ROCK_SIDE",
+			"ROCK_SLIDE",
 			"SUBSTITUTE",
 			"CUT",
 			"FLY",
@@ -333,7 +333,7 @@ return function(mod)
 			kind = "INT. MOUSE",
 			weight = 84.6,
 			text = "_GorochuDexEntry"},
-		types = { "ELECRTIC", "FIRE" },
+		types = { "ELECTRIC", "FIRE" },
 		baseStats = { 
 			hp = 60, 
 			attack = 112, 
@@ -350,7 +350,7 @@ return function(mod)
 			{ level = 24, move = "THUNDER_WAVE" },
 			{ level = 30, move = "FIRE_SPIN" },
 			{ level = 38, move = "FIRE_PUNCH" },
-			{ level = 40, move = "THUNDER_PUNCH"},
+			{ level = 40, move = "THUNDERPUNCH"},
 			{ level = 45, move = "THUNDER" },
 			{ level = 54, move = "FIRE_BLAST" },
 		}, 
@@ -497,7 +497,7 @@ return function(mod)
 			{ level = 3, move = "DEFENSE_CURL"},
 			{ level = 6, move = "TAIL_WHIP" },
 			{ level = 10, move = "WATER_GUN" },
-			{ level = 15, move = "ROLLOUT" },
+			{ level = 15, move = "ROLLING_KICK" },
 			{ level = 21, move = "BUBBLEBEAM" },
 			{ level = 28, move = "DOUBLE_EDGE" },
 			{ level = 36, move = "WATERFALL" },
@@ -564,7 +564,7 @@ return function(mod)
 			{ level = 3, move = "DEFENSE_CURL"},
 			{ level = 6, move = "TAIL_WHIP" },
 			{ level = 10, move = "WATER_GUN" },
-			{ level = 15, move = "ROLLOUT" },
+			{ level = 15, move = "ROLLING_KICK" },
 			{ level = 25, move = "BUBBLEBEAM" },
 			{ level = 36, move = "DOUBLE_EDGE" },
 			{ level = 48, move = "WATERFALL" },
@@ -678,7 +678,7 @@ return function(mod)
 			{ level = 7, move = "WATER_GUN" },
 			{ level = 12, move = "FURY_ATTACK" },
 			{ level = 17, move = "BITE" },
-			{ level = 22, move = "ENERGY_FOCUS" },
+			{ level = 22, move = "FOCUS_ENERGY" },
 			{ level = 27, move = "TAKE_DOWN" },
 			{ level = 33, move = "SCREECH" },
 			{ level = 39, move = "HYDRO_PUMP" },
@@ -882,7 +882,7 @@ return function(mod)
 	dex_no = dex_no + 1
 
 	-- Mr. Mime Line
-	mod.content.pokemon:patch("MRMIME", { dex = dex_no })
+	mod.content.pokemon:patch("MR_MIME", { dex = dex_no })
 	dex_no = dex_no + 1
 
 	-- Balloonda Line
@@ -948,7 +948,7 @@ return function(mod)
 		frontSize = 4,
 		palette = "PINKMON"
 	})
-	mod.content.cries:register("BALLOONDA", { file = mod.assets:path("assets/ballonda_cry.wav") })
+	mod.content.cries:register("BALLOONDA", { file = mod.assets:path("assets/balloonda_cry.wav") })
 	mod.content.icons:register("BALLOONDA", "BALL")
 	dex_no = dex_no + 1
 
@@ -1002,7 +1002,70 @@ return function(mod)
 	dex_no = dex_no + 1
 
 	-- Gyaoon Line
-	-- NEW MON: GYAOON
+	GyaDex = "It's believed that\nGYAOON was conceived\nbefore POKéMON had\ndefined types. His\nappearance hasn't\nchanged in centuries."
+	mod.content.text:register("_GyaoonDexEntry", GyaDex)
+	mod.content.pokemon:register("GYAOON", {
+		id = "GYAOON",
+		name = "GYAOON",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 8,
+			heightIn = 6,
+			kind = "BEAST",
+			weight = 379.2,
+			text = "_GyaoonDexEntry"},
+		types = { "NORMAL" },
+		baseStats = { 
+			hp = 95, 
+			attack = 50, 
+			defense = 40, 
+			speed = 110, 
+			special = 45 },
+		catchRate = 45, 
+		baseExp = 184, 
+		growthRate = "SLOW",
+		level1Moves = { "BITE", "LEER", "SAND_ATTACK", "SCREECH"  }, 
+		learnset = {
+			{ level = 8, move = "SAND_ATTACK" },
+			{ level = 15, move = "SCREECH" },
+			{ level = 22, move = "ROCK_SLIDE" },
+			{ level = 29, move = "THRASH" },
+			{ level = 38, move = "LEER" },
+			{ level = 47, move = "SLAM" },
+			{ level = 61, move = "EARTHQUAKE" },
+			{ level = 75, move = "HYPER_BEAM" },
+		}, 
+		tms = {
+			"MEGA_PUNCH", 
+			"TOXIC", 
+			"BODY_SLAM",
+			"TAKE_DOWN",
+			"DOUBLE_EDGE",
+			"HYPER_BEAM",
+			"SUBMISSION",
+			"COUNTER", 
+			"RAGE", 
+			"EARTHQUAKE", 
+			"FISSURE", 
+			"MIMIC",
+			"BIDE",
+			"FIRE_BLAST",
+			"SKULL_BASH",
+			"SOFTBOILED",
+			"SKY_ATTACK",
+			"ROCK_SLIDE",
+			"CUT",
+			"STRENGTH",
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/gyaoon_front.png"),
+		spriteBack = mod.assets:path("assets/gyaoon_back.png"),
+		frontSize = 6,
+		palette = "GREENMON"
+	})
+	mod.content.cries:register("GYAOON", { file = mod.assets:path("assets/gyaoon_cry.wav") })
+	mod.content.icons:register("GYAOON", "MON")
+	dex_no = dex_no + 1
 
 	-- Porygon Line
 	mod.content.pokemon:patch("PORYGON", { dex = dex_no })
@@ -1158,7 +1221,7 @@ return function(mod)
 		catchRate = 60, 
 		baseExp = 195, 
 		growthRate = "SLOW",
-		level1Moves = { "TACKLE", "DFENSE_CURL",  }, 
+		level1Moves = { "TACKLE", "DEFENSE_CURL",  }, 
 		learnset = {
 			{ level = 5, move = "GROWL" },
 			{ level = 8, move = "WATER_GUN" },
@@ -1171,7 +1234,7 @@ return function(mod)
 			{ level = 36, move = "SWIFT" },
 			{ level = 40, move = "SKULL_BASH" },
 			{ level = 44, move = "FIRE_PUNCH" },
-			{ level = 48, move = "ICE_BREAM" },
+			{ level = 48, move = "ICE_BEAM" },
 			{ level = 52, move = "THUNDERBOLT" },
 			{ level = 56, move = "FLAMETHROWER" },
 			{ level = 60, move = "SING" },
@@ -1250,9 +1313,9 @@ return function(mod)
 			{ level = 12, move = "THUNDERBOLT" },
 			{ level = 20, move = "SWIFT" },
 			{ level = 25, move = "JUMP_KICK" },
-			{ level = 32, move = "ROLLOUT" },
+			{ level = 32, move = "ROLLING_KICK" },
 			{ level = 38, move = "SWORDS_DANCE" },
-			{ level = 42, move = "THUNDER_PUNCH" },
+			{ level = 42, move = "THUNDERPUNCH" },
 			{ level = 42, move = "WHIRLWIND" },
 			{ level = 50, move = "SONICBOOM" },
 			{ level = 56, move = "MEGA_KICK"}
@@ -1302,192 +1365,192 @@ return function(mod)
 	mod.content.encounters:override("ROUTE_2", {
 	  grass = {
 		rate = 25,
-		slots = {
-			{
-			level = 3,
-			species = "RATTATA",
+			slots = {
+				{
+				level = 3,
+				species = "RATTATA",
+				},
+				{
+				level = 3,
+				species = "PIDGEY",
+				},
+				{
+				level = 4,
+				species = "PIDGEY",
+				},
+				{
+				level = 4,
+				species = "RATTATA",
+				},
+				{
+				level = 5,
+				species = "PIDGEY",
+				},
+				{
+				level = 3,
+				species = "YOSHI",
+				},
+				{
+				level = 2,
+				species = "RATTATA",
+				},
+				{
+				level = 5,
+				species = "RATTATA",
+				},
+				{
+				level = 4,
+				species = "YOSHI",
+				},
+				{
+				level = 5,
+				species = "YOSHI",
+				},
 			},
-			{
-			level = 3,
-			species = "PIDGEY",
-			},
-			{
-			level = 4,
-			species = "PIDGEY",
-			},
-			{
-			level = 4,
-			species = "RATTATA",
-			},
-			{
-			level = 5,
-			species = "PIDGEY",
-			},
-			{
-			level = 3,
-			species = "YOSHI",
-			},
-			{
-			level = 2,
-			species = "RATTATA",
-			},
-			{
-			level = 5,
-			species = "RATTATA",
-			},
-			{
-			level = 4,
-			species = "YOSHI",
-			},
-			{
-			level = 5,
-			species = "YOSHI",
-			},
-		},
 		},
 		source = "ROM:03:50F5",
 	})
 	mod.content.encounters:override("VIRIDIAN_FOREST", {
 	  grass = {
 		rate = 8,
-		slots = {
-			{
-			level = 4,
-			species = "WEEDLE",
+			slots = {
+				{
+				level = 4,
+				species = "WEEDLE",
+				},
+				{
+				level = 5,
+				species = "KAKUNA",
+				},
+				{
+				level = 3,
+				species = "WEEDLE",
+				},
+				{
+				level = 5,
+				species = "WEEDLE",
+				},
+				{
+				level = 4,
+				species = "KAKUNA",
+				},
+				{
+				level = 6,
+				species = "KAKUNA",
+				},
+				{
+				level = 4,
+				species = "METAPOD",
+				},
+				{
+				level = 3,
+				species = "CATERPIE",
+				},
+				{
+				level = 3,
+				species = "YOSHI",
+				},
+				{
+				level = 5,
+				species = "PIKACHU",
+				},
 			},
-			{
-			level = 5,
-			species = "KAKUNA",
-			},
-			{
-			level = 3,
-			species = "WEEDLE",
-			},
-			{
-			level = 5,
-			species = "WEEDLE",
-			},
-			{
-			level = 4,
-			species = "KAKUNA",
-			},
-			{
-			level = 6,
-			species = "KAKUNA",
-			},
-			{
-			level = 4,
-			species = "METAPOD",
-			},
-			{
-			level = 3,
-			species = "CATERPIE",
-			},
-			{
-			level = 3,
-			species = "YOSHI",
-			},
-			{
-			level = 5,
-			species = "PIKACHU",
-			},
-		},
 		},
 		source = "ROM:03:5121",
 	})
 	mod.content.encounters:override("ROUTE_3", {
 	  grass = {
 		rate = 20,
-		slots = {
-			{
-			level = 6,
-			species = "PIKABLU",
+			slots = {
+				{
+				level = 6,
+				species = "PIKABLU",
+				},
+				{
+				level = 5,
+				species = "SPEAROW",
+				},
+				{
+				level = 7,
+				species = "PIKABLU",
+				},
+				{
+				level = 6,
+				species = "SPEAROW",
+				},
+				{
+				level = 7,
+				species = "SPEAROW",
+				},
+				{
+				level = 8,
+				species = "PIKABLU",
+				},
+				{
+				level = 8,
+				species = "SPEAROW",
+				},
+				{
+				level = 3,
+				species = "JIGGLYPUFF",
+				},
+				{
+				level = 5,
+				species = "JIGGLYPUFF",
+				},
+				{
+				level = 7,
+				species = "JIGGLYPUFF",
+				},
 			},
-			{
-			level = 5,
-			species = "SPEAROW",
 			},
-			{
-			level = 7,
-			species = "PIKABLU",
+			source = "ROM:03:5137",
+		})
+		mod.content.encounters:patch("MT_MOON_B1F", {
+		grass = {
+			rate = 10,
+			slots = {
+				{
+				level = 8,
+				species = "ZUBAT",
+				},
+				{
+				level = 7,
+				species = "ZUBAT",
+				},
+				{
+				level = 9,
+				species = "ZUBAT",
+				},
+				{
+				level = 8,
+				species = "GEODUDE",
+				},
+				{
+				level = 6,
+				species = "KIRBY",
+				},
+				{
+				level = 10,
+				species = "KIRBY",
+				},
+				{
+				level = 10,
+				species = "GEODUDE",
+				},
+				{
+				level = 8,
+				species = "PARAS",
+				},
+				{
+				level = 11,
+				species = "KIRBY",
+				},
+				{
+				level = 8,
+				species = "CLEFAIRY",
+				},
 			},
-			{
-			level = 6,
-			species = "SPEAROW",
-			},
-			{
-			level = 7,
-			species = "SPEAROW",
-			},
-			{
-			level = 8,
-			species = "PIKABLU",
-			},
-			{
-			level = 8,
-			species = "SPEAROW",
-			},
-			{
-			level = 3,
-			species = "JIGGLYPUFF",
-			},
-			{
-			level = 5,
-			species = "JIGGLYPUFF",
-			},
-			{
-			level = 7,
-			species = "JIGGLYPUFF",
-			},
-		},
-		},
-		source = "ROM:03:5137",
-	})
-	mod.content.encounters:patch("MT_MOON_B1F", {
-	  grass = {
-		rate = 10,
-		slots = {
-			{
-			level = 8,
-			species = "ZUBAT",
-			},
-			{
-			level = 7,
-			species = "ZUBAT",
-			},
-			{
-			level = 9,
-			species = "ZUBAT",
-			},
-			{
-			level = 8,
-			species = "GEODUDE",
-			},
-			{
-			level = 6,
-			species = "KIRBY",
-			},
-			{
-			level = 10,
-			species = "KIRBY",
-			},
-			{
-			level = 10,
-			species = "GEODUDE",
-			},
-			{
-			level = 8,
-			species = "PARAS",
-			},
-			{
-			level = 11,
-			species = "KIRBY",
-			},
-			{
-			level = 8,
-			species = "CLEFAIRY",
-			},
-		},
 		},
 		source = "ROM:03:514D",
 	})
@@ -1497,97 +1560,144 @@ return function(mod)
 	mod.content.encounters:override("ROUTE_21", {
 	  grass = {
 		rate = 25,
-		slots = {
-			{
-			level = 21,
-			species = "RATTATA",
+			slots = {
+				{
+				level = 21,
+				species = "RATTATA",
+				},
+				{
+				level = 23,
+				species = "BALLOONDA",
+				},
+				{
+				level = 30,
+				species = "RATICATE",
+				},
+				{
+				level = 23,
+				species = "RATTATA",
+				},
+				{
+				level = 21,
+				species = "BALLOONDA",
+				},
+				{
+				level = 30,
+				species = "PIDGEOTTO",
+				},
+				{
+				level = 32,
+				species = "PIDGEOTTO",
+				},
+				{
+				level = 28,
+				species = "TANGELA",
+				},
+				{
+				level = 30,
+				species = "TANGELA",
+				},
+				{
+				level = 32,
+				species = "TANGELA",
+				},
 			},
-			{
-			level = 23,
-			species = "BALLOONDA",
-			},
-			{
-			level = 30,
-			species = "RATICATE",
-			},
-			{
-			level = 23,
-			species = "RATTATA",
-			},
-			{
-			level = 21,
-			species = "BALLOONDA",
-			},
-			{
-			level = 30,
-			species = "PIDGEOTTO",
-			},
-			{
-			level = 32,
-			species = "PIDGEOTTO",
-			},
-			{
-			level = 28,
-			species = "TANGELA",
-			},
-			{
-			level = 30,
-			species = "TANGELA",
-			},
-			{
-			level = 32,
-			species = "TANGELA",
-			},
-		},
 		},
 		source = "ROM:03:54D7",
 		water = {
-		rate = 5,
-		slots = {
-			{
-			level = 5,
-			species = "JAGGS",
+			rate = 5,
+			slots = {
+				{
+				level = 5,
+				species = "JAGGS",
+				},
+				{
+				level = 10,
+				species = "JAGGS",
+				},
+				{
+				level = 15,
+				species = "JAGGS",
+				},
+				{
+				level = 5,
+				species = "TENTACOOL",
+				},
+				{
+				level = 10,
+				species = "TENTACOOL",
+				},
+				{
+				level = 15,
+				species = "TENTACOOL",
+				},
+				{
+				level = 20,
+				species = "TENTACOOL",
+				},
+				{
+				level = 30,
+				species = "TENTACOOL",
+				},
+				{
+				level = 35,
+				species = "TENTACOOL",
+				},
+				{
+				level = 40,
+				species = "TENTACOOL",
+				},
 			},
-			{
-			level = 10,
-			species = "JAGGS",
-			},
-			{
-			level = 15,
-			species = "JAGGS",
-			},
-			{
-			level = 5,
-			species = "TENTACOOL",
-			},
-			{
-			level = 10,
-			species = "TENTACOOL",
-			},
-			{
-			level = 15,
-			species = "TENTACOOL",
-			},
-			{
-			level = 20,
-			species = "TENTACOOL",
-			},
-			{
-			level = 30,
-			species = "TENTACOOL",
-			},
-			{
-			level = 35,
-			species = "TENTACOOL",
-			},
-			{
-			level = 40,
-			species = "TENTACOOL",
-			},
-		},
 		},
 	})
-	
+	mod.content.encounters:override("VICTORY_ROAD_1F", {
+		grass = {
+			rate = 15,
+			slots = {
+				{
+				level = 24,
+				species = "MACHOP",
+				},
+				{
+				level = 26,
+				species = "GEODUDE",
+				},
+				{
+				level = 22,
+				species = "ZUBAT",
+				},
+				{
+				level = 36,
+				species = "GYAOON",
+				},
+				{
+				level = 39,
+				species = "GYAOON",
+				},
+				{
+				level = 42,
+				species = "GYAOON",
+				},
+				{
+				level = 41,
+				species = "GRAVELER",
+				},
+				{
+				level = 41,
+				species = "GOLBAT",
+				},
+				{
+				level = 42,
+				species = "MACHOKE",
+				},
+				{
+				level = 43,
+				species = "MAROWAK",
+				},
+			},
+		},
+		source = "ROM:03:559B",
+	})
 
 	-- Custom Pokémon League
 	-- Luigi
