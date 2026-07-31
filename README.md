@@ -12,7 +12,8 @@ to well-known and brand new crossover creatures you never thought you'd see in a
 - Azurai: Purple Rabbit Pokémon. Evolution of Pikablu (Level 18).
 - Jaggs: Shark Pokémon. Obtainable in Route 21.
 - Balloonda: Balloon Pokémon. Obtainable in Route 21
-- Yoshi: Dinosaur Pokémon. Obtainable in Viridian Forest.
+- Gyaoon: Beast Pokémon. Obtainable in Victory Road.
+- Yoshi: Dinosaur Pokémon. Obtainable in Route 2 and Viridian Forest.
 - Kirby: Stellar Pokémon. Obtainable in Mt. Moon.
 - Sonic: Hedgehog Pokémon. Obtainable in Route 24.
 
