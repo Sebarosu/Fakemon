@@ -1,7 +1,7 @@
 {
   "id": "fakemon-g1-esp",
-  "name": "FakeMon",
-  "version": "0.2.1",
+  "name": "FakeMon Parche Español",
+  "version": "0.3.0",
   "entry": "main.lua",
   "api": 2,
   "category": "POKEMON",
