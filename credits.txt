@@ -6,3 +6,5 @@ Kirby Sprites: Mister Mike (TSR)
 Marill, Azumarill and Beta Arceus Sprites: Sharkguy (TSR)
 Star Platinum Sprites: Mr. Htuber (TSR)
 Beta Pokémon Sprites: Frekay Planet (TSR)
+Factory Adventure Sprites: https://github.com/CameruptQDX/PF-Roaming-Red
+Friendship evolution by MaybeGreg (GitHub)

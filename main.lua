@@ -1,24 +1,76 @@
 return function(mod)
+	-- Friendship evolution
+	mod.content.evolution_methods:register("FRIENDSHIP", {
+		check = function(game, mon, evo, trigger)
+		return trigger.kind == "levelup" and (mon.friendship or 0) >= 220
+		end,
+	})
+
+	-- Death evolution
+	local FAINTCOUNTER = 10
+	mod.events:on("battle.fainted", function(ev)
+		local battler = ev.battler
+		if not battler.isPlayer then return end
+		local mon = battler.mon
+		mon.faintCount = (mon.faintCount or 0) + 1
+	end)
+	mod.content.evolution_methods:register("OVERFAINT", {
+		check = function(game, mon, evo, trigger)
+			if trigger.kind ~= "levelup" then return false end
+			return (mon.faintCount or 0) >= FAINTCOUNTER
+		end,
+	})
+
+
 	-- Add Items
+	local ItemEffects = require("src.inventory.ItemEffects")
+
 	mod.content.items:register("MIST_STONE", {
 		id = "MIST_STONE",
 		name = "MIST STONE",
 		price = 4200,
 		tossable = true,
 	})
-	mod.content.text_pointers:patch("CeladonMart4F", {
-		TEXT_CELADONMART4F_CLERK = { mart = { __append = { "MIST_STONE" } } },
-	})
+
+	local vanillaNeedsTarget = ItemEffects.needsTarget
+	ItemEffects.needsTarget = function(id, itemDef)
+		if id == "MIST_STONE" then return true end
+		return vanillaNeedsTarget(id, itemDef)
+	end
+
+	local vanillaUse = ItemEffects.use
+	ItemEffects.use = function(data, save, itemId, target, battle, moveIndex, ow)
+		if itemId == "MIST_STONE" then
+		if battle then
+			return "failed", { "OAK: This isn't\nthe time to use\nthat!" }
+		end
+		if not target then
+			return "failed", { "It won't have\nany effect." }
+		end
+		for _, evo in ipairs(data.pokemon[target.species].evolutions or {}) do
+			if evo.method == "ITEM" and evo.item == "MIST_STONE" then
+			return "consumed", nil, { evolveTo = evo.species }
+			end
+		end
+		return "failed", { "It won't have\nany effect." }
+		end
+		return vanillaUse(data, save, itemId, target, battle, moveIndex, ow)
+	end
+
+	-- Dex Entries
 	dex_no = 1
 
 	-- Bulbasaur Line
 	mod.content.pokemon:patch("BULBASAUR", { dex = dex_no })
+	mod.content.icons:patch("BULBASAUR", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("IVYSAUR", { dex = dex_no })
+	mod.content.icons:patch("IVYSAUR", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VENUSAUR", { dex = dex_no })
+	mod.content.icons:patch("VENUSAUR", "GRASS")
 	dex_no = dex_no + 1
-	SapuDex = "A POKéMON as\nhuge as a buil-\nding, with a\ntropical tree\non his back \nthat, on bigger\n beings, becomes \nan entire forest."
+	SapuDex = "A POKéMON as huge\nas a building,\nwith a tree on\nhis back that, on\nbigger ones, is\nan entire forest."
 	mod.content.text:register("_SapusaurDexEntry", SapuDex)
 	mod.content.pokemon:register("SAPUSAUR", {
 		id = "SAPUSAUR",
@@ -72,32 +124,109 @@ return function(mod)
 			"CUT"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/sapusaur_front.png"),
-		spriteBack = mod.assets:path("assets/sapusaur_back.png"),
+		spriteFront = mod.assets:path("assets/sapusaur/front.png"),
+		spriteBack = mod.assets:path("assets/sapusaur/back.png"),
 		frontSize = 6,
 		palette = "GREENMON"
 	})
 	mod.content.pokemon:patch( "VENUSAUR", { evolutions = {
 		{
-        item = "LEAF_STONE",
+        item = "MIST_STONE",
         level = 1,
         method = "ITEM",
         species = "SAPUSAUR",
       },
 	}})
-	mod.content.cries:register("SAPUSAUR", { file = mod.assets:path("assets/sapusaur_cry.wav") })
+	mod.content.cries:register("SAPUSAUR", { file = mod.assets:path("assets/sapusaur/cry.wav") })
 	mod.content.icons:register("SAPUSAUR", "GRASS")
 	dex_no = dex_no + 1
 
 	-- Charmander Line
 	mod.content.pokemon:patch("CHARMANDER", { dex = dex_no })
+	mod.content.icons:patch("CHARMANDER", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("CHARMELEON", { dex = dex_no })
+	mod.content.icons:patch("CHARMELEON", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("CHARIZARD", { dex = dex_no })
+	mod.content.icons:patch("CHARIZARD", "MON")
 	dex_no = dex_no + 1
-	-- NEW MON: SKELOZARD
-	ColtDex = "Lives in the \nheart of active\nvolcanoes that,\nwhen erupting,\nthey fly away \nat such speed\nno one can no-\ntice them clearly"
+	SkeloDex = "This evolution is\nthe result of\nCHARIZARD's body\nunable to hold so\nmuch power after\nso many injuries."
+	mod.content.text:register("_SkelozardDexEntry", SkeloDex)
+	mod.content.pokemon:register("SKELOZARD", {
+		id = "SKELOZARD", 
+		name = "SKELOZARD", 
+		dex = dex_no, 
+		dexEntry = { 
+		heightFt = 4,
+		heightIn = 4,
+		kind = "SKELETON",
+		weight = 68.3,
+		text = "_SkelozardDexEntry"},
+		types = { "FIRE", "GHOST" },
+		baseStats = { 
+		hp = 100, 
+		attack = 125, 
+		defense = 95, 
+		speed = 120, 
+		special = 140 },
+		catchRate = 3, 
+		baseExp = 225, 
+		growthRate = "SLOW",
+		level1Moves = { "EMBER", "GROWL" }, 
+		learnset = {
+			{ level = 9, move = "SMOKESCREEN" },
+			{ level = 15, move = "LICK" },
+			{ level = 22, move = "DRAGON_RAGE" },
+			{ level = 28, move = "RAGE" },
+			{ level = 34, move = "FIRE_SPIN" },
+			{ level = 40, move = "CONFUSE_RAY" },
+			{ level = 46, move = "SLASH" },
+			{ level = 52, move = "NIGHT_SHADE" },
+			{ level = 58, move = "FLAMETHROWER" },
+			{ level = 70, move = "MIMIC" },
+			{ level = 80, move = "REST" },
+			{ level = 88, move = "SUBSTITUTE" },
+		}, 
+		tms = {
+			"MEGA_PUNCH",
+			"SWORDS_DANCE", 
+			"TOXIC", 
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"HYPER_BEAM", 
+			"SUBMISSION",
+			"RAGE", 
+			"DRAGON_RAGE", 
+			"EARTHQUAKE", 
+			"DIG",
+			"MIMIC",
+			"DOUBLE_TEAM", 
+			"BIDE", 
+			"SELFDESTRUCT",
+			"FIRE_BLAST", 
+			"SWIFT", 
+			"SKULL_BASH",
+			"DREAM_EATER",
+			"SKY_ATTACK", 
+			"REST",
+			"EXPLOSION",
+			"ROCK_SLIDE", 
+			"SUBSTITUTE",
+			"FLY", 
+			"FLASH"
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/skelozard/front.png"),
+		spriteBack = mod.assets:path("assets/skelozard/back.png"),
+		frontSize = 4,
+		palette = "GRAYMON"
+	})
+	mod.content.cries:register("SKELOZARD", { file = mod.assets:path("assets/skelozard/cry.wav") })
+	mod.content.icons:register("SKELOZARD", "HELIX")
+	dex_no = dex_no + 1
+	ColtDex = "Lives in the heart\nof active volca-\nnoes. When these\nerupt, they fly\naway so fast they\nare not perceived."
 	mod.content.text:register("_CharcoltDexEntry", ColtDex)
 	mod.content.pokemon:register("CHARCOLT", {
 		id = "CHARCOLT",
@@ -164,17 +293,22 @@ return function(mod)
 			"STRENGTH"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/charcolt_front.png"),
-		spriteBack = mod.assets:path("assets/charcolt_back.png"),
+		spriteFront = mod.assets:path("assets/charcolt/front.png"),
+		spriteBack = mod.assets:path("assets/charcolt/back.png"),
 		frontSize = 6,
 		palette = "REDMON"
 	})
-	mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/charcolt_cry.wav") })
+	mod.content.cries:register("CHARCOLT", { file = mod.assets:path("assets/charcolt/cry.wav") })
 	mod.content.icons:register("CHARCOLT", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch( "CHARIZARD", { evolutions = {
 		{
-        item = "FIRE_STONE",
+        level = 1,
+        method = "OVERFAINT",
+        species = "SKELOZARD",
+      },
+		{
+        item = "MIST_STONE",
         level = 1,
         method = "ITEM",
         species = "CHARCOLT",
@@ -183,10 +317,13 @@ return function(mod)
 
 	-- Squirtle Line
 	mod.content.pokemon:patch("SQUIRTLE", { dex = dex_no })
+	mod.content.icons:patch("SQUIRTLE", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("WARTORTLE", { dex = dex_no })
+	mod.content.icons:patch("WARTORTLE", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("BLASTOISE", { dex = dex_no })
+	mod.content.icons:patch("BLASTOISE", "WATER")
 	dex_no = dex_no + 1
 	RainDex = "It's said that\nthis POKéMON is\nborn when BLASTOISE\ngets thunderstruck\nin the middle of\na storm. Can des-\ntroy entire cities\nwith their cannons."
 	mod.content.text:register("_RainerDexEntry", RainDex)
@@ -256,70 +393,87 @@ return function(mod)
 			"STRENGTH"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/rainer_front.png"),
-		spriteBack = mod.assets:path("assets/rainer_back.png"),
+		spriteFront = mod.assets:path("assets/rainer/front.png"),
+		spriteBack = mod.assets:path("assets/rainer/back.png"),
 		frontSize = 6,
 		palette = "BLUEMON"
 	})
 	mod.content.pokemon:patch( "BLASTOISE", { evolutions = {
 		{
-        item = "WATER_STONE",
+        item = "MIST_STONE",
         level = 1,
         method = "ITEM",
         species = "RAINER",
       },
 	}})
-	mod.content.cries:register("RAINER", { file = mod.assets:path("assets/rainer_cry.wav") })
+	mod.content.cries:register("RAINER", { file = mod.assets:path("assets/rainer/cry.wav") })
 	mod.content.icons:register("RAINER", "WATER")
 	dex_no = dex_no + 1
 
 	-- Caterpie Line
 	mod.content.pokemon:patch("CATERPIE", { dex = dex_no })
+	mod.content.icons:patch("CATERPIE", "BUG")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("METAPOD", { dex = dex_no })
+	mod.content.icons:patch("METAPOD", "BUG")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("BUTTERFREE", { dex = dex_no })
+	mod.content.icons:patch("BUTTERFREE", "BUG")
 	dex_no = dex_no + 1
 
 	-- Weedle Line
 	mod.content.pokemon:patch("WEEDLE", { dex = dex_no })
+	mod.content.icons:patch("WEEDLE", "BUG")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("KAKUNA", { dex = dex_no })
+	mod.content.icons:patch("KAKUNA", "BUG")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("BEEDRILL", { dex = dex_no })
+	mod.content.icons:patch("BEEDRILL", "BUG")
 	dex_no = dex_no + 1
 
 	-- Pidgey Line
 	mod.content.pokemon:patch("PIDGEY", { dex = dex_no })
+	mod.content.icons:patch("PIDGEY", "BIRD")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("PIDGEOTTO", { dex = dex_no })
+	mod.content.icons:patch("PIDGEOTTO", "BIRD")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("PIDGEOT", { dex = dex_no })
+	mod.content.icons:patch("PIDGEOT", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Rattata Line
 	mod.content.pokemon:patch("RATTATA", { dex = dex_no })
+	mod.content.icons:patch("RATTATA", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("RATICATE", { dex = dex_no })
+	mod.content.icons:patch("RATICATE", "QUADRUPED")
 	dex_no = dex_no + 1
 	-- NEW MON: RATICLAW
 
 	-- Spearow Line
 	mod.content.pokemon:patch("SPEAROW", { dex = dex_no })
+	mod.content.icons:patch("SPEAROW", "BIRD")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("FEAROW", { dex = dex_no })
+	mod.content.icons:patch("FEAROW", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Ekans Line
 	mod.content.pokemon:patch("EKANS", { dex = dex_no })
+	mod.content.icons:patch("EKANS", "SNAKE")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("ARBOK", { dex = dex_no })
+	mod.content.icons:patch("ARBOK", "SNAKE")
 	dex_no = dex_no + 1
 
 	-- Pikachu Line
 	mod.content.pokemon:patch("PIKACHU", { dex = dex_no })
+	mod.content.icons:patch("PIKACHU", "PIKACHU")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("RAICHU", { dex = dex_no })
+	mod.content.icons:patch("RAICHU", "PIKACHU")
 	dex_no = dex_no + 1
 	GoroDex = "Is competitive\nby nature. Uses\ntheir two big\ntails, charged\nwith electricity\nto attack. Lives\nin hot areas."
 	mod.content.text:register("_GorochuDexEntry", GoroDex)
@@ -366,13 +520,13 @@ return function(mod)
 			"THUNDER_WAVE"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/gorochu_front.png"),
-		spriteBack = mod.assets:path("assets/gorochu_back.png"),
+		spriteFront = mod.assets:path("assets/gorochu/front.png"),
+		spriteBack = mod.assets:path("assets/gorochu/back.png"),
 		frontSize = 4,
 		palette = "REDMON"
 	})
-	mod.content.cries:register("GOROCHU", { file = mod.assets:path("assets/gorochu_cry.wav") })
-	mod.content.icons:register("GOROCHU", "MON")
+	mod.content.cries:register("GOROCHU", { file = mod.assets:path("assets/gorochu/cry.wav") })
+	mod.content.icons:register("GOROCHU", "PIKACHU")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch( "PIKACHU", { evolutions = {
 		{
@@ -391,82 +545,273 @@ return function(mod)
 
 	-- Sandshrew Line
 	mod.content.pokemon:patch("SANDSHREW", { dex = dex_no })
+	mod.content.icons:patch("SANDSHREW", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("SANDSLASH", { dex = dex_no })
+	mod.content.icons:patch("SANDSLASH", "MON")
 	dex_no = dex_no + 1
 
 	-- Nidoran Female Line
 	mod.content.pokemon:patch("NIDORAN_F", { dex = dex_no })
+	mod.content.icons:patch("NIDORAN_F", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("NIDORINA", { dex = dex_no })
+	mod.content.icons:patch("NIDORINA", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("NIDOQUEEN", { dex = dex_no })
+	mod.content.icons:patch("NIDOQUEEN", "MON")
 	dex_no = dex_no + 1
-	-- NEW MON: NIDOGODESS
+	GodesDex = "She watches over her\nlineage with a calm\nthat masks seismic\npower. It is said\nshe can make earth\nshatter with a stomp."
+	mod.content.text:register("_NidogodessDexEntry", GodesDex)
+	mod.content.pokemon:register("NIDOGODESS", {
+		id = "NIDOGODESS",
+		name = "NIDOGODESS",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 6,
+			heightIn = 3,
+			kind = "ROYAL",
+			weight = 275.8,
+			text = "_NidogodessDexEntry"},
+		types = { "POISON", "GROUND" },
+		baseStats = { 
+			hp = 120, 
+			attack = 110, 
+			defense = 115, 
+			speed =  105, 
+			special = 100 },
+		catchRate = 3, 
+		baseExp = 233, 
+		growthRate = "MEDIUM_SLOW",
+		level1Moves = { "TACKLE", "TAIL_WHIP", "FOCUS_ENERGY", "POISON_STING" }, 
+		learnset = {
+			{ level = 12, move = "BODY_SLAM" },
+			{ level = 20, move = "DOUBLE_KICK" },
+			{ level = 28, move = "FURY_ATTACK" },
+			{ level = 36, move = "TAKE_DOWN" },
+			{ level = 44, move = "THRASH" },
+			{ level = 52, move = "EARTHQUAKE"},
+			{ level = 60, move = "REST" },
+			{ level = 68, move = "FISSURE" },
+			{ level = 76, move = "COUNTER" },
+			{ level = 84, move = "EXPLOSION" },
+			{ level = 92, move = "REFLECT" },
+			{ level = 100, move = "MIST" },
+		}, 
+		tms = {
+			"MEGA_PUNCH", 
+			"MEGA_KICK", 
+			"TOXIC",
+			"HORN_DRILL",
+			"BODY_SLAM", 
+			"TAKE_DOWN",
+			"DOUBLE_EDGE",
+			"HYPER_BEAM", 
+			"SUBMISSION", 
+			"COUNTER",
+			"RAGE", 
+			"THUNDER",
+			"EARTHQUAKE",
+			"FISSURE",
+			"DIG",
+			"MIMIC",
+			"DOUBLE_TEAM",
+			"BIDE",
+			"SELFDESTRUCT",
+			"SKULL_BASH",
+			"REST",
+			"THUNDER_WAVE",
+			"EXPLOSION",
+			"ROCK_SLIDE",
+			"SUBSTITUTE",
+			"CUT",
+			"STRENGTH",
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/nidogodess/front.png"),
+		spriteBack = mod.assets:path("assets/nidogodess/back.png"),
+		frontSize = 4,
+		palette = "BLUEMON"
+	})
+	mod.content.cries:register("NIDOGODESS", { file = mod.assets:path("assets/nidogod/cry.wav") })
+	mod.content.icons:register("NIDOGODESS", "MON")
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch( "NIDOQUEEN", { evolutions = {
+		{
+        item = "MIST_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "NIDOGODESS",
+      },
+	}})
 
 	-- Nidoran Male Line
 	mod.content.pokemon:patch("NIDORAN_M", { dex = dex_no })
+	mod.content.icons:patch("NIDORAN_M", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("NIDORINO", { dex = dex_no })
+	mod.content.icons:patch("NIDORINO", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("NIDOKING", { dex = dex_no })
+	mod.content.icons:patch("NIDOKING", "MON")
 	dex_no = dex_no + 1
-	-- NEW MON: NIDOGOD
+	GodDex = "Only shows to those\ntrainers able to beat\nELITE FOUR twice.\nHis horn, previously\ntoxic, now can tunnel\nthrough whole mountains."
+	mod.content.text:register("_NidogodDexEntry", GodDex)
+	mod.content.pokemon:register("NIDOGOD", {
+		id = "NIDOGOD",
+		name = "NIDOGOD",
+		dex = dex_no,
+			dexEntry = { 
+			heightFt = 6,
+			heightIn = 11,
+			kind = "PARAMOUNT",
+			weight = 84.6,
+			text = "_NidogodDexEntry"},
+		types = { "POISON", "GROUND" },
+		baseStats = { 
+			hp = 110, 
+			attack = 125, 
+			defense = 105, 
+			speed =  115, 
+			special = 100 },
+		catchRate = 3, 
+		baseExp = 234, 
+		growthRate = "MEDIUM_SLOW",
+		level1Moves = { "TACKLE", "LEER", "FOCUS_ENERGY", "POISON_STING" }, 
+		learnset = {
+			{ level = 12, move = "HORN_ATTACK" },
+			{ level = 20, move = "DOUBLE_KICK" },
+			{ level = 28, move = "FURY_ATTACK" },
+			{ level = 36, move = "TAKE_DOWN" },
+			{ level = 44, move = "THRASH" },
+			{ level = 52, move = "BODY_SLAM"},
+			{ level = 60, move = "TOXIC" },
+			{ level = 68, move = "HORN_DRILL" },
+			{ level = 76, move = "EARTHQUAKE" },
+			{ level = 84, move = "FISSURE" },
+			{ level = 92, move = "REST" },
+			{ level = 100, move = "HYPER_BEAM" },
+		}, 
+		tms = {
+			"MEGA_PUNCH", 
+			"MEGA_KICK", 
+			"TOXIC",
+			"HORN_DRILL",
+			"BODY_SLAM", 
+			"TAKE_DOWN",
+			"DOUBLE_EDGE",
+			"HYPER_BEAM", 
+			"SUBMISSION", 
+			"COUNTER",
+			"RAGE", 
+			"THUNDER",
+			"EARTHQUAKE",
+			"FISSURE",
+			"DIG",
+			"MIMIC",
+			"DOUBLE_TEAM",
+			"BIDE",
+			"SELFDESTRUCT",
+			"SKULL_BASH",
+			"REST",
+			"THUNDER_WAVE",
+			"EXPLOSION",
+			"ROCK_SLIDE",
+			"SUBSTITUTE",
+			"CUT",
+			"STRENGTH",
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/nidogod/front.png"),
+		spriteBack = mod.assets:path("assets/nidogod/back.png"),
+		frontSize = 4,
+		palette = "PURPLEMON"
+	})
+	mod.content.cries:register("NIDOGOD", { file = mod.assets:path("assets/nidogod/cry.wav") })
+	mod.content.icons:register("NIDOGOD", "MON")
+	dex_no = dex_no + 1
+	mod.content.pokemon:patch( "NIDOKING", { evolutions = {
+		{
+        item = "MIST_STONE",
+        level = 1,
+        method = "ITEM",
+        species = "NIDOGOD",
+      },
+	}})
 
 	-- Clefairy Line
 	mod.content.pokemon:patch("CLEFAIRY", { dex = dex_no })
+	mod.content.icons:patch("CLEFAIRY", "FAIRY")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("CLEFABLE", { dex = dex_no })
+	mod.content.icons:patch("CLEFABLE", "FAIRY")
 	dex_no = dex_no + 1
 
 	-- Vulpix Line
 	mod.content.pokemon:patch("VULPIX", { dex = dex_no })
+	mod.content.icons:patch("VULPIX", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("NINETALES", { dex = dex_no })
+	mod.content.icons:patch("NINETALES", "QUADRUPED")
 	dex_no = dex_no + 1
 
 	-- Jigglypuff Line
 	mod.content.pokemon:patch("JIGGLYPUFF", { dex = dex_no })
+	mod.content.icons:patch("JIGGLYPUFF", "FAIRY")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("WIGGLYTUFF", { dex = dex_no })
+	mod.content.icons:patch("WIGGLYTUFF", "FAIRY")
 	dex_no = dex_no + 1
 
 	-- Zubat Line
 	mod.content.pokemon:patch("ZUBAT", { dex = dex_no })
+	mod.content.icons:patch("ZUBAT", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GOLBAT", { dex = dex_no })
+	mod.content.icons:patch("GOLBAT", "MON")
 	dex_no = dex_no + 1
 
 	-- Oddish Line
 	mod.content.pokemon:patch("ODDISH", { dex = dex_no })
+	mod.content.icons:patch("ODDISH", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GLOOM", { dex = dex_no })
+	mod.content.icons:patch("GLOOM", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VILEPLUME", { dex = dex_no })
+	mod.content.icons:patch("VILEPLUME", "GRASS")
 	dex_no = dex_no + 1
 
 	-- Paras Line
 	mod.content.pokemon:patch("PARAS", { dex = dex_no })
+	mod.content.icons:patch("PARAS", "BUG")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("PARASECT", { dex = dex_no })
+	mod.content.icons:patch("PARASECT", "BUG")
 	dex_no = dex_no + 1
 
 	-- Venonat Line
 	mod.content.pokemon:patch("VENONAT", { dex = dex_no })
+	mod.content.icons:patch("VENONAT", "BUG")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VENOMOTH", { dex = dex_no })
+	mod.content.icons:patch("VENOMOTH", "BUG")
 	dex_no = dex_no + 1
 
 	-- Diglett Line
 	mod.content.pokemon:patch("DIGLETT", { dex = dex_no })
+	mod.content.icons:patch("DIGLETT", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("DUGTRIO", { dex = dex_no })
+	mod.content.icons:patch("DUGTRIO", "MON")
 	dex_no = dex_no + 1
 
 	-- Meowth Line
 	mod.content.pokemon:patch("MEOWTH", { dex = dex_no })
+	mod.content.icons:patch("MEOWTH", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("PERSIAN", { dex = dex_no })
+	mod.content.icons:patch("PERSIAN", "MON")
 	dex_no = dex_no + 1
 
 	-- Pikablu Line
@@ -524,18 +869,18 @@ return function(mod)
 		},
 		evolutions = {
 			{
-				level = 18,
+				level = 25,
 				method = "LEVEL",
 				species = "AZURAI",
 			},
 		},
-		spriteFront = mod.assets:path("assets/pikablu_front.png"),
-		spriteBack = mod.assets:path("assets/pikablu_back.png"),
+		spriteFront = mod.assets:path("assets/pikablu/front.png"),
+		spriteBack = mod.assets:path("assets/pikablu/back.png"),
 		frontSize = 3,
 		palette = "PINKMON"
 	})
-	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu_cry.wav") })
-	mod.content.icons:register("PIKABLU", "FAIRY")
+	mod.content.cries:register("PIKABLU", { file = mod.assets:path("assets/pikablu/cry.wav") })
+	mod.content.icons:register("PIKABLU", "PIKACHU")
 	dex_no = dex_no + 1
 	AzurDex = "When it plays\nin water, it rolls\nup its enlongated\nears to prevent\ntheir insides from\ngetting wet."
 	mod.content.text:register("_AzuraiDexEntry", AzurDex)
@@ -546,7 +891,7 @@ return function(mod)
 			dexEntry = { 
 			heightFt = 2,
 			heightIn = 7,
-			kind = "PURPLERABBIT",
+			kind = "PURPLEBUNNY",
 			weight = 62.8,
 			text = "_AzuraiDexEntry"},
 		types = { "WATER" },
@@ -590,19 +935,21 @@ return function(mod)
 			"SURF"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/pikablu_front.png"),
-		spriteBack = mod.assets:path("assets/pikablu_back.png"),
+		spriteFront = mod.assets:path("assets/azurai/front.png"),
+		spriteBack = mod.assets:path("assets/azurai/back.png"),
 		frontSize = 4,
 		palette = "PURPLEMON"
 	})
-	mod.content.cries:register("AZURAI", { file = mod.assets:path("assets/pikablu_cry.wav") })
-	mod.content.icons:register("AZURAI", "FAIRY")
+	mod.content.cries:register("AZURAI", { file = mod.assets:path("assets/azurai/cry.wav") })
+	mod.content.icons:register("AZURAI", "PIKACHU")
 	dex_no = dex_no + 1
 
 	-- Psyduck Line
 	mod.content.pokemon:patch("PSYDUCK", { dex = dex_no })
+	mod.content.icons:patch("PSYDUCK", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GOLDUCK", { dex = dex_no })
+	mod.content.icons:patch("GOLDUCK", "MON")
 	dex_no = dex_no + 1
 
 	-- Diir Line
@@ -610,22 +957,29 @@ return function(mod)
 
 	-- Mankey Line
 	mod.content.pokemon:patch("MANKEY", { dex = dex_no })
+	mod.content.icons:patch("MANKEY", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("PRIMEAPE", { dex = dex_no })
+	mod.content.icons:patch("PRIMEAPE", "MON")
 	dex_no = dex_no + 1
 
 	-- Growlithe Line
 	mod.content.pokemon:patch("GROWLITHE", { dex = dex_no })
+	mod.content.icons:patch("GROWLITHE", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("ARCANINE", { dex = dex_no })
+	mod.content.icons:patch("ARCANINE", "QUADRUPED")
 	dex_no = dex_no + 1
 
 	-- Poliwag Line
 	mod.content.pokemon:patch("POLIWAG", { dex = dex_no })
+	mod.content.icons:patch("POLIWAG", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("POLIWHIRL", { dex = dex_no })
+	mod.content.icons:patch("POLIWHIRL", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("POLIWRATH", { dex = dex_no })
+	mod.content.icons:patch("POLIWRATH", "MON")
 	dex_no = dex_no + 1
 
 	-- Crocky Line
@@ -633,18 +987,24 @@ return function(mod)
 
 	-- Abra Line
 	mod.content.pokemon:patch("ABRA", { dex = dex_no })
+	mod.content.icons:patch("ABRA", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("KADABRA", { dex = dex_no })
+	mod.content.icons:patch("KADABRA", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("ALAKAZAM", { dex = dex_no })
+	mod.content.icons:patch("ALAKAZAM", "MON")
 	dex_no = dex_no + 1
 
 	-- Machop Line
 	mod.content.pokemon:patch("MACHOP", { dex = dex_no })
+	mod.content.icons:patch("MACHOP", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("MACHOKE", { dex = dex_no })
+	mod.content.icons:patch("MACHOKE", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("MACHAMP", { dex = dex_no })
+	mod.content.icons:patch("MACHAMP", "MON")
 	dex_no = dex_no + 1
 
 	-- Caktoos Line
@@ -705,184 +1065,237 @@ return function(mod)
 			"STRENGTH"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/jaggs_front.png"),
-		spriteBack = mod.assets:path("assets/jaggs_back.png"),
+		spriteFront = mod.assets:path("assets/jaggs/front.png"),
+		spriteBack = mod.assets:path("assets/jaggs/back.png"),
 		frontSize = 6,
 		palette = "BLUEMON"
 	})
-	mod.content.cries:register("JAGGS", { file = mod.assets:path("assets/jaggs_cry.wav") })
+	mod.content.cries:register("JAGGS", { file = mod.assets:path("assets/jaggs/cry.wav") })
 	mod.content.icons:register("JAGGS", "WATER")
 	dex_no = dex_no + 1
 
 	-- Bellsprout Line
 	mod.content.pokemon:patch("BELLSPROUT", { dex = dex_no })
+	mod.content.icons:patch("BELLSPROUT", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("WEEPINBELL", { dex = dex_no })
+	mod.content.icons:patch("WEEPINBELL", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VICTREEBEL", { dex = dex_no })
+	mod.content.icons:patch("VICTREEBEL", "GRASS")
 	dex_no = dex_no + 1
 	-- NEW MON: MEGABELL
 
 	-- Tentacool Line
 	mod.content.pokemon:patch("TENTACOOL", { dex = dex_no })
+	mod.content.icons:patch("TENTACOOL", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("TENTACRUEL", { dex = dex_no })
+	mod.content.icons:patch("TENTACRUEL", "WATER")
 	dex_no = dex_no + 1
 
 	-- Geodude Line
 	mod.content.pokemon:patch("GEODUDE", { dex = dex_no })
+	mod.content.icons:patch("GEODUDE", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GRAVELER", { dex = dex_no })
+	mod.content.icons:patch("GRAVELER", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GOLEM", { dex = dex_no })
+	mod.content.icons:patch("GOLEM", "MON")
 	dex_no = dex_no + 1
 
 	-- Ponyta Line
 	mod.content.pokemon:patch("PONYTA", { dex = dex_no })
+	mod.content.icons:patch("PONYTA", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("RAPIDASH", { dex = dex_no })
+	mod.content.icons:patch("RAPIDASH", "QUADRUPED")
 	dex_no = dex_no + 1
 
 	-- Slowpoke Line
 	mod.content.pokemon:patch("SLOWPOKE", { dex = dex_no })
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("SLOWBRO", { dex = dex_no })
+	mod.content.icons:patch("SLOWBRO", "MON")
 	dex_no = dex_no + 1
 
 	-- Magnemite Line
 	mod.content.pokemon:patch("MAGNEMITE", { dex = dex_no })
+	mod.content.icons:patch("MAGNEMITE", "BALL")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("MAGNETON", { dex = dex_no })
+	mod.content.icons:patch("MAGNETON", "BALL")
 	dex_no = dex_no + 1
 
 	-- Farfetch’d Line
 	mod.content.pokemon:patch("FARFETCHD", { dex = dex_no })
+	mod.content.icons:patch("FARFETCHD", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Doduo Line
 	mod.content.pokemon:patch("DODUO", { dex = dex_no })
+	mod.content.icons:patch("DODUO", "BIRD")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("DODRIO", { dex = dex_no })
+	mod.content.icons:patch("DODRIO", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Seel Line
 	mod.content.pokemon:patch("SEEL", { dex = dex_no })
+	mod.content.icons:patch("SEEL", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("DEWGONG", { dex = dex_no })
+	mod.content.icons:patch("DEWGONG", "WATER")
 	dex_no = dex_no + 1
 
 	-- Grimer Line
 	mod.content.pokemon:patch("GRIMER", { dex = dex_no })
+	mod.content.icons:patch("GRIMER", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("MUK", { dex = dex_no })
+	mod.content.icons:patch("MUK", "MON")
 	dex_no = dex_no + 1
 
 	-- Shellder Line
 	mod.content.pokemon:patch("SHELLDER", { dex = dex_no })
+	mod.content.icons:patch("SHELLDER", "HELIX")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("CLOYSTER", { dex = dex_no })
+	mod.content.icons:patch("CLOYSTER", "HELIX")
 	dex_no = dex_no + 1
 
 	-- Gastly Line
 	mod.content.pokemon:patch("GASTLY", { dex = dex_no })
+	mod.content.icons:patch("GASTLY", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("HAUNTER", { dex = dex_no })
+	mod.content.icons:patch("HAUNTER", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GENGAR", { dex = dex_no })
+	mod.content.icons:patch("GENGAR", "MON")
 	dex_no = dex_no + 1
 	-- NEW MON: PHAMTO
 	-- NEW MON: SPUKIE
 
 	-- Onix Line
 	mod.content.pokemon:patch("ONIX", { dex = dex_no })
+	mod.content.icons:patch("ONIX", "SNAKE")
 	dex_no = dex_no + 1
 
 	-- Drowzee Line
 	mod.content.pokemon:patch("DROWZEE", { dex = dex_no })
+	mod.content.icons:patch("DROWZEE", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("HYPNO", { dex = dex_no })
+	mod.content.icons:patch("HYPNO", "MON")
 	dex_no = dex_no + 1
 	-- NEW MON: DREAMASTER
 
 	-- Krabby Line
 	mod.content.pokemon:patch("KRABBY", { dex = dex_no })
+	mod.content.icons:patch("KRABBY", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("KINGLER", { dex = dex_no })
+	mod.content.icons:patch("KINGLER", "WATER")
 	dex_no = dex_no + 1
 
 	-- Voltorb Line
 	mod.content.pokemon:patch("VOLTORB", { dex = dex_no })
+	mod.content.icons:patch("VOLTORB", "BALL")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("ELECTRODE", { dex = dex_no })
+	mod.content.icons:patch("ELECTRODE", "BALL")
 	dex_no = dex_no + 1
 
 	-- Exeggcute Line
 	mod.content.pokemon:patch("EXEGGCUTE", { dex = dex_no })
+	mod.content.icons:patch("EXEGGCUTE", "GRASS")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("EXEGGUTOR", { dex = dex_no })
+	mod.content.icons:patch("EXEGGUTOR", "GRASS")
 	dex_no = dex_no + 1
 
 	-- Cubone Line
 	mod.content.pokemon:patch("CUBONE", { dex = dex_no })
+	mod.content.icons:patch("CUBONE", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("MAROWAK", { dex = dex_no })
+	mod.content.icons:patch("MAROWAK", "MON")
 	dex_no = dex_no + 1
 	-- NEW MON: FRACTURE
 
 	-- Hitmon Line
 	mod.content.pokemon:patch("HITMONLEE", { dex = dex_no })
+	mod.content.icons:patch("HITMONLEE", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("HITMONCHAN", { dex = dex_no })
+	mod.content.icons:patch("HITMONCHAN", "MON")
 	dex_no = dex_no + 1
 
 	-- Lickitung Line
 	mod.content.pokemon:patch("LICKITUNG", { dex = dex_no })
+	mod.content.icons:patch("LICKITUNG", "MON")
 	dex_no = dex_no + 1
 
 	-- Koffing Line
 	mod.content.pokemon:patch("KOFFING", { dex = dex_no })
+	mod.content.icons:patch("KOFFING", "MON")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("WEEZING", { dex = dex_no })
+	mod.content.icons:patch("WEEZING", "MON")
 	dex_no = dex_no + 1
 
 	-- Rhyhorn Line
 	mod.content.pokemon:patch("RHYHORN", { dex = dex_no })
+	mod.content.icons:patch("RHYHORN", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("RHYDON", { dex = dex_no })
+	mod.content.icons:patch("RHYDON", "MON")
 	dex_no = dex_no + 1
 
 	-- Chansey Line
 	mod.content.pokemon:patch("CHANSEY", { dex = dex_no })
+	mod.content.icons:patch("CHANSEY", "FAIRY")
 	dex_no = dex_no + 1
 
 	-- Tangela Line
 	mod.content.pokemon:patch("TANGELA", { dex = dex_no })
+	mod.content.icons:patch("TANGELA", "GRASS")
 	dex_no = dex_no + 1
 
 	-- Kangaskhan Line
 	mod.content.pokemon:patch("KANGASKHAN", { dex = dex_no })
+	mod.content.icons:patch("KANGASKHAN", "MON")
 	dex_no = dex_no + 1
 
 	-- Horsea Line
 	mod.content.pokemon:patch("HORSEA", { dex = dex_no })
+	mod.content.icons:patch("HORSEA", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("SEADRA", { dex = dex_no })
+	mod.content.icons:patch("SEADRA", "WATER")
 	dex_no = dex_no + 1
 
 	-- Goldeen Line
 	mod.content.pokemon:patch("GOLDEEN", { dex = dex_no })
+	mod.content.icons:patch("GOLDEEN", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("SEAKING", { dex = dex_no })
+	mod.content.icons:patch("SEAKING", "WATER")
 	dex_no = dex_no + 1
 
 	-- Staryu Line
 	mod.content.pokemon:patch("STARYU", { dex = dex_no })
+	mod.content.icons:patch("STARYU", "HELIX")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("STARMIE", { dex = dex_no })
+	mod.content.icons:patch("STARMIE", "HELIX")
 	dex_no = dex_no + 1
 
 	-- Mr. Mime Line
 	mod.content.pokemon:patch("MR_MIME", { dex = dex_no })
+	mod.content.icons:patch("MR_MIME", "MON")
 	dex_no = dex_no + 1
 
 	-- Balloonda Line
@@ -943,62 +1356,76 @@ return function(mod)
 			"FLY",
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/balloonda_front.png"),
-		spriteBack = mod.assets:path("assets/balloonda_back.png"),
+		spriteFront = mod.assets:path("assets/balloonda/front.png"),
+		spriteBack = mod.assets:path("assets/balloonda/back.png"),
 		frontSize = 4,
 		palette = "PINKMON"
 	})
-	mod.content.cries:register("BALLOONDA", { file = mod.assets:path("assets/balloonda_cry.wav") })
+	mod.content.cries:register("BALLOONDA", { file = mod.assets:path("assets/balloonda/cry.wav") })
 	mod.content.icons:register("BALLOONDA", "BALL")
 	dex_no = dex_no + 1
 
 	-- Scyther Line
 	mod.content.pokemon:patch("SCYTHER", { dex = dex_no })
+	mod.content.icons:patch("SCYTHER", "BUG")
 	dex_no = dex_no + 1
 
 	-- Jynx Line
 	mod.content.pokemon:patch("JYNX", { dex = dex_no })
+	mod.content.icons:patch("JYNX", "MON")
 	dex_no = dex_no + 1
 
 	-- Electabuzz Line
 	mod.content.pokemon:patch("ELECTABUZZ", { dex = dex_no })
+	mod.content.icons:patch("ELECTABUZZ", "MON")
 	dex_no = dex_no + 1
 
 	-- Magmar Line
 	mod.content.pokemon:patch("MAGMAR", { dex = dex_no })
+	mod.content.icons:patch("MAGMAR", "MON")
 	dex_no = dex_no + 1
 
 	-- Pinsir Line
 	mod.content.pokemon:patch("PINSIR", { dex = dex_no })
+	mod.content.icons:patch("PINSIR", "BUG")
 	dex_no = dex_no + 1
 	-- NEW MON: PINSIRE
 
 	-- Tauros Line
 	mod.content.pokemon:patch("TAUROS", { dex = dex_no })
+	mod.content.icons:patch("TAUROS", "QUADRUPED")
 	dex_no = dex_no + 1
 
 	-- Magikarp Line
 	mod.content.pokemon:patch("MAGIKARP", { dex = dex_no })
+	mod.content.icons:patch("MAGIKARP", "WATER")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("GYARADOS", { dex = dex_no })
+	mod.content.icons:patch("GYARADOS", "SNAKE")
 	dex_no = dex_no + 1
 
 	-- Lapras Line
 	mod.content.pokemon:patch("LAPRAS", { dex = dex_no })
+	mod.content.icons:patch("LAPRAS", "WATER")
 	dex_no = dex_no + 1
 
 	-- Ditto Line
 	mod.content.pokemon:patch("DITTO", { dex = dex_no })
+	mod.content.icons:patch("DITTO", "MON")
 	dex_no = dex_no + 1
 
 	-- Eevee Line
 	mod.content.pokemon:patch("EEVEE", { dex = dex_no })
+	mod.content.icons:patch("EEVEE", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("VAPOREON", { dex = dex_no })
+	mod.content.icons:patch("VAPOREON", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("JOLTEON", { dex = dex_no })
+	mod.content.icons:patch("JOLTEON", "QUADRUPED")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("FLAREON", { dex = dex_no })
+	mod.content.icons:patch("FLAREON", "QUADRUPED")
 	dex_no = dex_no + 1
 
 	-- Gyaoon Line
@@ -1058,37 +1485,110 @@ return function(mod)
 			"STRENGTH",
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/gyaoon_front.png"),
-		spriteBack = mod.assets:path("assets/gyaoon_back.png"),
+		spriteFront = mod.assets:path("assets/gyaoon/front.png"),
+		spriteBack = mod.assets:path("assets/gyaoon/back.png"),
 		frontSize = 6,
 		palette = "GREENMON"
 	})
-	mod.content.cries:register("GYAOON", { file = mod.assets:path("assets/gyaoon_cry.wav") })
+	mod.content.cries:register("GYAOON", { file = mod.assets:path("assets/gyaoon/cry.wav") })
 	mod.content.icons:register("GYAOON", "MON")
 	dex_no = dex_no + 1
 
 	-- Porygon Line
 	mod.content.pokemon:patch("PORYGON", { dex = dex_no })
+	mod.content.icons:patch("PORYGON", "MON")
 	dex_no = dex_no + 1
 
 	-- Omanyte Line
 	mod.content.pokemon:patch("OMANYTE", { dex = dex_no })
+	mod.content.icons:patch("OMANYTE", "HELIX")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("OMASTAR", { dex = dex_no })
+	mod.content.icons:patch("OMASTAR", "HELIX")
 	dex_no = dex_no + 1
 
 	-- Kabuto Line
 	mod.content.pokemon:patch("KABUTO", { dex = dex_no })
+	mod.content.icons:patch("KABUTO", "HELIX")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("KABUTOPS", { dex = dex_no })
+	mod.content.icons:patch("KABUTOPS", "HELIX")
 	dex_no = dex_no + 1
 
 	-- Aerodactyl Line
 	mod.content.pokemon:patch("AERODACTYL", { dex = dex_no })
+	mod.content.icons:patch("AERODACTYL", "BIRD")
+	dex_no = dex_no + 1
+
+	-- White Hand Line
+	WhiteDex = "Unsure if actually\na POKéMON or\na truly undead\nhorror. Used to be\njust a ghost story\nuntil it appeared."
+	mod.content.text:register("_WhiteHandDexEntry", WhiteDex)
+	mod.content.pokemon:register("WHITE_HAND", {
+		id = "WHITE_HAND", 
+		name = "WHITE HAND", 
+		dex = dex_no, 
+		dexEntry = { 
+		heightFt = 6,
+		heightIn = 0,
+		kind = "CURSED",
+		weight = 200.0,
+		text = "_WhiteHandDexEntry"},
+		types = { "GHOST", "FIGHTING" },
+		baseStats = { 
+		hp = 50, 
+		attack = 90, 
+		defense = 40, 
+		speed = 115, 
+		special = 75 },
+		catchRate = 25, 
+		baseExp = 225, 
+		growthRate = "MEDIUM_SLOW",
+		level1Moves = { "LICK", "LEER" }, 
+		learnset = {
+			{ level = 6, move = "COMET_PUNCH" },
+			{ level = 11, move = "KARATE_CHOP" },
+			{ level = 16, move = "CONFUSE_RAY" },
+			{ level = 21, move = "MEGA_PUNCH" },
+			{ level = 26, move = "NIGHT_SHADE" },
+			{ level = 31, move = "SCREECH" },
+			{ level = 36, move = "SUBMISSION" },
+			{ level = 41, move = "DIZZY_PUNCH" },
+			{ level = 46, move = "DOUBLESLAP" },
+			{ level = 51, move = "SEISMIC_TOSS" },
+			{ level = 58, move = "HYPER_BEAM" },
+		}, 
+		tms = {
+			"MEGA_PUNCH", 
+			"MEGA_KICK", 
+			"TOXIC",
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"HYPER_BEAM",
+			"SUBMISSION",
+			"COUNTER",
+			"RAGE", 
+			"MIMIC",  
+			"DOUBLE_TEAM", 
+			"REST", 
+			"PSYWAVE", 
+			"SUBSTITUTE", 
+			"CUT", 
+			"STRENGTH", 
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/white hand/front.png"),
+		spriteBack = mod.assets:path("assets/white hand/back.png"),
+		frontSize = 4,
+		palette = "GRAYMON"
+	})
+	mod.content.cries:register("WHITE_HAND", { file = mod.assets:path("assets/white hand/cry.wav") })
+	mod.content.icons:register("WHITE_HAND", "HELIX")
 	dex_no = dex_no + 1
 
 	-- Snorlax Line
 	mod.content.pokemon:patch("SNORLAX", { dex = dex_no })
+	mod.content.icons:patch("SNORLAX", "MON")
 	dex_no = dex_no + 1
 
 	-- Kotora Line
@@ -1098,37 +1598,108 @@ return function(mod)
 
 	-- Articuno Line
 	mod.content.pokemon:patch("ARTICUNO", { dex = dex_no })
+	mod.content.icons:patch("ARTICUNO", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Zapdos Line
 	mod.content.pokemon:patch("ZAPDOS", { dex = dex_no })
+	mod.content.icons:patch("ZAPDOS", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Moltres Line
 	mod.content.pokemon:patch("MOLTRES", { dex = dex_no })
+	mod.content.icons:patch("MOLTRES", "BIRD")
 	dex_no = dex_no + 1
 
 	-- Dratini Line
 	mod.content.pokemon:patch("DRATINI", { dex = dex_no })
+	mod.content.icons:patch("DRATINI", "SNAKE")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("DRAGONAIR", { dex = dex_no })
+	mod.content.icons:patch("DRAGONAIR", "SNAKE")
 	dex_no = dex_no + 1
 	mod.content.pokemon:patch("DRAGONITE", { dex = dex_no })
+	mod.content.icons:patch("DRAGONITE", "SNAKE")
 	dex_no = dex_no + 1
 
 	-- Mew Line
 	mod.content.pokemon:patch("MEW", { dex = dex_no })
+	mod.content.icons:patch("MEW", "MON")
 	dex_no = dex_no + 1
-
-	-- Mewtwo Line
 	mod.content.pokemon:patch("MEWTWO", { dex = dex_no })
+	mod.content.icons:patch("MEWTWO", "MON")
 	dex_no = dex_no + 1
 	-- NEW MON: MEWTHREE
 
 	-- Legendaries line
 	-- NEW MON: OMEGA
 	-- NEW MON: DIMINOX
-	-- NEW MON: BETARCEUS
+	BetaDex = "It is said to have\nemerged from an\negg in a place\nwhere there was\nnothing, then\nshaped the world."
+	mod.content.text:register("_BetarceusDexEntry", BetaDex)
+	mod.content.pokemon:register("BETARCEUS", {
+		id = "BETARCEUS", 
+		name = "BETARCEUS", 
+		dex = dex_no, 
+		dexEntry = { 
+		heightFt = 10,
+		heightIn = 6,
+		kind = "ALPHA",
+		weight = 705.5,
+		text = "_BetarceusDexEntry"},
+		types = { "NORMAL" },
+		baseStats = { 
+		hp = 120, 
+		attack = 120, 
+		defense = 120, 
+		speed = 120, 
+		special = 102 },
+		catchRate = 3, 
+		baseExp = 255, 
+		growthRate = "SLOW",
+		level1Moves = { "PSYCHIC", "SLASH", "NIGHT_SHADE", "SEISMIC_TOSS" }, 
+		learnset = {
+			{ level = 10, move = "BIDE" },
+			{ level = 20, move = "EARTHQUAKE" },
+			{ level = 30, move = "SCREECH"},
+			{ level = 40, move = "SWIFT" },
+			{ level = 50, move = "REST" },
+			{ level = 60, move = "WRAP" },
+			{ level = 70, move = "RECOVER" },
+			{ level = 80, move = "HYPER_BEAM" },
+			{ level = 90, move = "EXPLOSION" },
+			{ level = 100, move = "TRI_ATTACK" },
+		}, 
+		tms = {
+			"SWORDS_DANCE", 
+			"MEGA_KICK", 
+			"BODY_SLAM", 
+			"TAKE_DOWN", 
+			"DOUBLE_EDGE", 
+			"HYPER_BEAM", 
+			"RAGE", 
+			"DRAGON_RAGE", 
+			"EARTHQUAKE", 
+			"DOUBLE_TEAM", 
+			"EGG_BOMB", 
+			"FIRE_BLAST", 
+			"SWIFT", 
+			"SKY_ATTACK", 
+			"ROCK_SLIDE", 
+			"CUT", 
+			"FLY", 
+			"SURF", 
+			"STRENGTH", 
+			"FLASH",
+		},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/betaceus/front.png"),
+		spriteBack = mod.assets:path("assets/betaceus/back.png"),
+		frontSize = 4,
+		palette = "MEWMON"
+	})
+	mod.content.cries:register("BETARCEUS", { file = mod.assets:path("assets/betaceus/cry.wav") })
+	mod.content.icons:register("BETARCEUS", "QUADRUPED")
+	dex_no = dex_no + 1
 
 	-- Crossover Line
 	YoshiDex = "He catches enemies \nwith his long ton-\ngue and turns them \ninto eggs,to then \nthrow them like \nproyectiles."
@@ -1191,15 +1762,72 @@ return function(mod)
 			"FLASH"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/yoshi_front.png"),
-		spriteBack = mod.assets:path("assets/yoshi_back.png"),
+		spriteFront = mod.assets:path("assets/yoshi/front.png"),
+		spriteBack = mod.assets:path("assets/yoshi/back.png"),
 		frontSize = 4,
 		palette = "GREENMON"
 	})
-	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi_cry.wav") })
-	mod.content.icons:register("YOSHI", { image = mod.assets:path("assets/yoshi_icon.png") })
+	mod.content.cries:register("YOSHI", { file = mod.assets:path("assets/yoshi/cry.wav") })
+	mod.content.icons:register("YOSHI", { image = mod.assets:path("assets/yoshi/icon.png") })
 	dex_no = dex_no + 1
-	KirbyDex = "He absorbs his\nenemies inhaling\nthem and copies\ntheir moves.\nHis balloon-\nlike body makes\nhim fly endlessly."
+
+	SonicDex = "It's the fastest\nliving being\never detected\nuntil the moment.\nPrefers being\non green hills\nand hates machines."
+	mod.content.text:register("_SonicDexEntry", SonicDex)
+	mod.content.pokemon:register("SONIC", {
+		id = "SONIC", 
+		name = "SONIC", 
+		dex = dex_no, 
+		dexEntry = { 
+		heightFt = 2,
+		heightIn = 4,
+		kind = "HEDGEHOG",
+		weight = 30.0,
+		text = "_SonicDexEntry"},
+		types = { "ELECTRIC", "FIGHTING" }, 
+		baseStats = { 
+		hp = 70, 
+		attack = 80, 
+		defense = 35, 
+		speed = 140, 
+		special = 75 },
+		catchRate = 60, 
+		baseExp = 100, 
+		growthRate = "SLOW",
+		level1Moves = { "QUICK_ATTACK", "TAIL_WHIP",  }, 
+		learnset = {
+			{ level = 12, move = "THUNDERBOLT" },
+			{ level = 20, move = "SWIFT" },
+			{ level = 25, move = "JUMP_KICK" },
+			{ level = 32, move = "ROLLING_KICK" },
+			{ level = 38, move = "SWORDS_DANCE" },
+			{ level = 42, move = "THUNDERPUNCH" },
+			{ level = 42, move = "WHIRLWIND" },
+			{ level = 50, move = "SONICBOOM" },
+			{ level = 56, move = "MEGA_KICK"}
+		}, 
+		tms = {
+			"WHIRLWIND", 
+			"SWORDS_DANCE", 
+			"MEGA_KICK", 
+			"COUNTER", 
+			"THUNDERBOLT", 
+			"DOUBLE_TEAM", 
+			"SWIFT", 
+			"SUBSTITUTE"},
+		evolutions = {},
+		spriteFront = mod.assets:path("assets/sonic/front.png"),
+		spriteBack = mod.assets:path("assets/sonic/back.png"),
+		frontSize = 5,
+		palette = "MEWMON"
+	})
+	mod.content.cries:register("SONIC", { file = mod.assets:path("assets/sonic/cry.wav") })
+	mod.content.icons:register("SONIC", { image = mod.assets:path("assets/sonic/icon.png") })
+	dex_no = dex_no + 1
+
+	-- NEW MON: K_ROOL
+
+	--Kirby Line
+	KirbyDex = "Inhales his enemies to then copy their moves. His balloon-like body makes him fly endlessly."
 	mod.content.text:register("_KirbyDexEntry", KirbyDex)
 	mod.content.pokemon:register("KIRBY", {
 		id = "KIRBY", 
@@ -1278,83 +1906,33 @@ return function(mod)
 			"FLASH"
 		},
 		evolutions = {},
-		spriteFront = mod.assets:path("assets/kirby_front.png"),
-		spriteBack = mod.assets:path("assets/kirby_back.png"),
+		spriteFront = mod.assets:path("assets/kirby/front.png"),
+		spriteBack = mod.assets:path("assets/kirby/back.png"),
 		frontSize = 5,
 		palette = "PINKMON"
 	})
-	mod.content.cries:register("KIRBY", { file = mod.assets:path("assets/kirby_cry.wav") })
+	mod.content.cries:register("KIRBY", { file = mod.assets:path("assets/kirby/cry.wav") })
 	mod.content.icons:register("KIRBY", "FAIRY")
 	dex_no = dex_no + 1
-	SonicDex = "It's the fastest\nliving being\never detected\nuntil the moment.\nPrefers being\non green hills\nand hates machines."
-	mod.content.text:register("_SonicDexEntry", SonicDex)
-	mod.content.pokemon:register("SONIC", {
-		id = "SONIC", 
-		name = "SONIC", 
-		dex = dex_no, 
-		dexEntry = { 
-		heightFt = 2,
-		heightIn = 4,
-		kind = "HEDGEHOG",
-		weight = 30.0,
-		text = "_SonicDexEntry"},
-		types = { "ELECTRIC", "FIGHTING" }, 
-		baseStats = { 
-		hp = 70, 
-		attack = 80, 
-		defense = 35, 
-		speed = 140, 
-		special = 75 },
-		catchRate = 60, 
-		baseExp = 100, 
-		growthRate = "SLOW",
-		level1Moves = { "QUICK_ATTACK", "TAIL_WHIP",  }, 
-		learnset = {
-			{ level = 12, move = "THUNDERBOLT" },
-			{ level = 20, move = "SWIFT" },
-			{ level = 25, move = "JUMP_KICK" },
-			{ level = 32, move = "ROLLING_KICK" },
-			{ level = 38, move = "SWORDS_DANCE" },
-			{ level = 42, move = "THUNDERPUNCH" },
-			{ level = 42, move = "WHIRLWIND" },
-			{ level = 50, move = "SONICBOOM" },
-			{ level = 56, move = "MEGA_KICK"}
-		}, 
-		tms = {
-			"WHIRLWIND", 
-			"SWORDS_DANCE", 
-			"MEGA_KICK", 
-			"COUNTER", 
-			"THUNDERBOLT", 
-			"DOUBLE_TEAM", 
-			"SWIFT", 
-			"SUBSTITUTE"},
-		evolutions = {},
-		spriteFront = mod.assets:path("assets/sonic_front.png"),
-		spriteBack = mod.assets:path("assets/sonic_back.png"),
-		frontSize = 5,
-		palette = "MEWMON"
-	})
-	mod.content.cries:register("SONIC", { file = mod.assets:path("assets/sonic_cry.wav") })
-	mod.content.icons:register("SONIC", { image = mod.assets:path("assets/sonic_icon.png") })
-	dex_no = dex_no + 1
-	-- NEW MON: DEDEDE
-	-- NEW MON: META_KNIGHT
-	-- NEW MON: K_ROOL
+
 	-- Kracko Line
 	-- NEW MON: CO_KRACKO
 	-- NEW MON: KRACKO_JR
 	-- NEW MON: KRACKO
+
 	-- NEW MON: MOTOBUG
+
 	-- NEW MON: YUMETARO
+
 	-- Animatronic Line
 	-- NEW MON: FREDDY
 	-- NEW MON: G_FREDDY
 	-- NEW MON: BONNIE
 	-- NEW MON: CHICA
 	-- NEW MON: FOXY
-	-- NEW MON: BONNIE
+
 	-- NEW MON: GARFIELD
+
 	-- NEW MON: SQUASH
 	-- NEW MON: IMITATER
 	-- NEW MON: STITCH
@@ -1505,8 +2083,8 @@ return function(mod)
 			},
 			},
 			source = "ROM:03:5137",
-		})
-		mod.content.encounters:patch("MT_MOON_B1F", {
+	})
+	mod.content.encounters:patch("MT_MOON_B1F", {
 		grass = {
 			rate = 10,
 			slots = {
@@ -1554,8 +2132,101 @@ return function(mod)
 		},
 		source = "ROM:03:514D",
 	})
-	mod.content.encounters:patch("ROUTE_24", {
-	  grass = { slots = { __prepend = { { species = "SONIC", level = 10 } } } },
+	mod.content.encounters:override("ROUTE_24", {
+	  grass = {
+		rate = 25,
+		slots = {
+			{
+			level = 7,
+			species = "WEEDLE",
+			},
+			{
+			level = 8,
+			species = "KAKUNA",
+			},
+			{
+			level = 12,
+			species = "SONIC",
+			},
+			{
+			level = 12,
+			species = "ODDISH",
+			},
+			{
+			level = 13,
+			species = "ODDISH",
+			},
+			{
+			level = 10,
+			species = "ABRA",
+			},
+			{
+			level = 14,
+			species = "ODDISH",
+			},
+			{
+			level = 13,
+			species = "SONIC",
+			},
+			{
+			level = 8,
+			species = "ABRA",
+			},
+			{
+			level = 12,
+			species = "ABRA",
+			},
+		},
+		},
+		source = "ROM:03:51A5",
+	})
+	mod.content.encounters:patch("POKEMON_TOWER_3F", {
+	  grass = {
+		rate = 10,
+		slots = {
+			{
+			level = 20,
+			species = "GASTLY",
+			},
+			{
+			level = 21,
+			species = "GASTLY",
+			},
+			{
+			level = 22,
+			species = "GASTLY",
+			},
+			{
+			level = 23,
+			species = "GASTLY",
+			},
+			{
+			level = 19,
+			species = "GASTLY",
+			},
+			{
+			level = 18,
+			species = "GASTLY",
+			},
+			{
+			level = 24,
+			species = "WHITE_HAND",
+			},
+			{
+			level = 20,
+			species = "CUBONE",
+			},
+			{
+			level = 22,
+			species = "CUBONE",
+			},
+			{
+			level = 25,
+			species = "HAUNTER",
+			},
+		},
+      },
+      source = "ROM:03:52B1",
 	})
 	mod.content.encounters:override("ROUTE_21", {
 	  grass = {
